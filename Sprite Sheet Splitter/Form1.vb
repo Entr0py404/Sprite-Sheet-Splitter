@@ -5,6 +5,7 @@ Public Class Form1
     Public GridColor As New Pen(Color.FromArgb(0, 255, 128)) 'Color of the lines
     Dim ZoomCounter As Integer = 100
     ReadOnly SupportedIamgeFormats() As String = {".png", ".bmp", ".jpeg", ".jpg", ".tiff", ".tif"}
+    ReadOnly NinePatchDirections() As String = {"northwest", "north", "northeast", "west", "center", "east", "southwest", "south", "southeast"}
     Dim EventsOn As Boolean = False
     'Form1 - Load
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -71,7 +72,13 @@ Public Class Form1
                         grp.DrawImage(PictureBox_SpriteSheet.Image, New Rectangle(0, 0, CropRect.Width, CropRect.Height), CropRect, GraphicsUnit.Pixel)
                         grp.Dispose()
                     End Using
-                    CropImage.Save(TextBox_ExportDirectory.Text & "\" & TextBox_FileName.Text & "_" & MainLoopIndex & ".png", ImageFormat.Png)
+
+                    If CheckBox_NinePatchMode.Checked = False Then
+                        CropImage.Save(TextBox_ExportDirectory.Text & "\" & TextBox_FileName.Text & "_" & MainLoopIndex & ".png", ImageFormat.Png)
+                    Else
+                        CropImage.Save(TextBox_ExportDirectory.Text & "\9patch_" & TextBox_FileName.Text & "_" & NinePatchDirections(MainLoopIndex - 1) & ".png", ImageFormat.Png)
+                    End If
+
                     CropImage.Dispose()
                 Next
             Next
@@ -261,6 +268,18 @@ Public Class Form1
     'ToolStripMenuItem1 - DropDownOpened
     Private Sub ToolStripMenuItem1_DropDownOpened(sender As Object, e As EventArgs) Handles ToolStripMenuItem1.DropDownOpened
         ToolStripMenuItem1.ForeColor = Color.Black
+    End Sub
+    'CheckBox_NinePatchMode - CheckedChanged
+    Private Sub CheckBox_NinePatchMode_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox_NinePatchMode.CheckedChanged
+        If CheckBox_NinePatchMode.Checked = True Then
+            NumericUpDownH.Value = 3
+            NumericUpDownV.Value = 3
+            NumericUpDownH.Enabled = False
+            NumericUpDownV.Enabled = False
+        Else
+            NumericUpDownH.Enabled = True
+            NumericUpDownV.Enabled = True
+        End If
     End Sub
 End Class
 

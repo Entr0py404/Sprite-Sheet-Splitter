@@ -43,6 +43,7 @@ Partial Class Form1
         Me.ToolStripLabel_SizeMode = New System.Windows.Forms.ToolStripLabel()
         Me.ToolStripComboBox_SizeMode = New System.Windows.Forms.ToolStripComboBox()
         Me.ToolStripLabel_ZoomLvl = New System.Windows.Forms.ToolStripLabel()
+        Me.CheckBox_NinePatchMode = New System.Windows.Forms.CheckBox()
         Me.PictureBox_SpriteSheet = New System.Windows.Forms.PictureBox()
         Me.Button_SelectExportDirectory = New System.Windows.Forms.Button()
         Me.Button_SplitSpriteSheet = New System.Windows.Forms.Button()
@@ -75,7 +76,7 @@ Partial Class Form1
         Me.NumericUpDownH.BackColor = System.Drawing.Color.FromArgb(CType(CType(46, Byte), Integer), CType(CType(49, Byte), Integer), CType(CType(54, Byte), Integer))
         Me.NumericUpDownH.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.NumericUpDownH.ForeColor = System.Drawing.Color.WhiteSmoke
-        Me.NumericUpDownH.Location = New System.Drawing.Point(160, 40)
+        Me.NumericUpDownH.Location = New System.Drawing.Point(160, 56)
         Me.NumericUpDownH.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
         Me.NumericUpDownH.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.NumericUpDownH.Name = "NumericUpDownH"
@@ -86,7 +87,7 @@ Partial Class Form1
         'Label3
         '
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(16, 40)
+        Me.Label3.Location = New System.Drawing.Point(16, 56)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(136, 21)
         Me.Label3.TabIndex = 6
@@ -95,7 +96,7 @@ Partial Class Form1
         '
         'Label4
         '
-        Me.Label4.Location = New System.Drawing.Point(16, 80)
+        Me.Label4.Location = New System.Drawing.Point(16, 96)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(136, 21)
         Me.Label4.TabIndex = 12
@@ -107,7 +108,7 @@ Partial Class Form1
         Me.NumericUpDownV.BackColor = System.Drawing.Color.FromArgb(CType(CType(46, Byte), Integer), CType(CType(49, Byte), Integer), CType(CType(54, Byte), Integer))
         Me.NumericUpDownV.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.NumericUpDownV.ForeColor = System.Drawing.Color.WhiteSmoke
-        Me.NumericUpDownV.Location = New System.Drawing.Point(160, 80)
+        Me.NumericUpDownV.Location = New System.Drawing.Point(160, 96)
         Me.NumericUpDownV.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
         Me.NumericUpDownV.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.NumericUpDownV.Name = "NumericUpDownV"
@@ -119,7 +120,7 @@ Partial Class Form1
         '
         Me.Label_EstimatedSpriteSize.AutoSize = True
         Me.Label_EstimatedSpriteSize.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer))
-        Me.Label_EstimatedSpriteSize.Location = New System.Drawing.Point(16, 120)
+        Me.Label_EstimatedSpriteSize.Location = New System.Drawing.Point(16, 136)
         Me.Label_EstimatedSpriteSize.Name = "Label_EstimatedSpriteSize"
         Me.Label_EstimatedSpriteSize.Size = New System.Drawing.Size(106, 13)
         Me.Label_EstimatedSpriteSize.TabIndex = 15
@@ -130,7 +131,7 @@ Partial Class Form1
         Me.TextBox_ExportDirectory.BackColor = System.Drawing.Color.FromArgb(CType(CType(46, Byte), Integer), CType(CType(49, Byte), Integer), CType(CType(54, Byte), Integer))
         Me.TextBox_ExportDirectory.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox_ExportDirectory.ForeColor = System.Drawing.Color.WhiteSmoke
-        Me.TextBox_ExportDirectory.Location = New System.Drawing.Point(128, 200)
+        Me.TextBox_ExportDirectory.Location = New System.Drawing.Point(128, 216)
         Me.TextBox_ExportDirectory.Name = "TextBox_ExportDirectory"
         Me.TextBox_ExportDirectory.ReadOnly = True
         Me.TextBox_ExportDirectory.Size = New System.Drawing.Size(128, 13)
@@ -142,14 +143,14 @@ Partial Class Form1
         Me.TextBox_FileName.BackColor = System.Drawing.Color.FromArgb(CType(CType(46, Byte), Integer), CType(CType(49, Byte), Integer), CType(CType(54, Byte), Integer))
         Me.TextBox_FileName.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox_FileName.ForeColor = System.Drawing.Color.WhiteSmoke
-        Me.TextBox_FileName.Location = New System.Drawing.Point(128, 160)
+        Me.TextBox_FileName.Location = New System.Drawing.Point(128, 176)
         Me.TextBox_FileName.Name = "TextBox_FileName"
         Me.TextBox_FileName.Size = New System.Drawing.Size(128, 13)
         Me.TextBox_FileName.TabIndex = 3
         '
         'Label_FileName
         '
-        Me.Label_FileName.Location = New System.Drawing.Point(56, 152)
+        Me.Label_FileName.Location = New System.Drawing.Point(56, 168)
         Me.Label_FileName.Name = "Label_FileName"
         Me.Label_FileName.Size = New System.Drawing.Size(60, 24)
         Me.Label_FileName.TabIndex = 18
@@ -158,7 +159,7 @@ Partial Class Form1
         '
         'Label_ExportDirectory
         '
-        Me.Label_ExportDirectory.Location = New System.Drawing.Point(24, 192)
+        Me.Label_ExportDirectory.Location = New System.Drawing.Point(24, 208)
         Me.Label_ExportDirectory.Name = "Label_ExportDirectory"
         Me.Label_ExportDirectory.Size = New System.Drawing.Size(92, 24)
         Me.Label_ExportDirectory.TabIndex = 19
@@ -172,7 +173,7 @@ Partial Class Form1
         Me.Panel_Image.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Panel_Image.Location = New System.Drawing.Point(0, 32)
         Me.Panel_Image.Name = "Panel_Image"
-        Me.Panel_Image.Size = New System.Drawing.Size(332, 217)
+        Me.Panel_Image.Size = New System.Drawing.Size(332, 234)
         Me.Panel_Image.TabIndex = 82
         '
         'PixelBoxGrid
@@ -182,7 +183,7 @@ Partial Class Form1
         Me.PixelBoxGrid.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PixelBoxGrid.Location = New System.Drawing.Point(0, 0)
         Me.PixelBoxGrid.Name = "PixelBoxGrid"
-        Me.PixelBoxGrid.Size = New System.Drawing.Size(332, 217)
+        Me.PixelBoxGrid.Size = New System.Drawing.Size(332, 234)
         Me.PixelBoxGrid.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PixelBoxGrid.TabIndex = 85
         Me.PixelBoxGrid.TabStop = False
@@ -218,6 +219,7 @@ Partial Class Form1
         '
         'SplitContainer1.Panel2
         '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.CheckBox_NinePatchMode)
         Me.SplitContainer1.Panel2.Controls.Add(Me.NumericUpDownH)
         Me.SplitContainer1.Panel2.Controls.Add(Me.PictureBox_SpriteSheet)
         Me.SplitContainer1.Panel2.Controls.Add(Me.NumericUpDownV)
@@ -231,7 +233,7 @@ Partial Class Form1
         Me.SplitContainer1.Panel2.Controls.Add(Me.Label_FileName)
         Me.SplitContainer1.Panel2.Controls.Add(Me.Label_ExportDirectory)
         Me.SplitContainer1.Panel2.Controls.Add(Me.ShapeContainer1)
-        Me.SplitContainer1.Size = New System.Drawing.Size(690, 274)
+        Me.SplitContainer1.Size = New System.Drawing.Size(690, 291)
         Me.SplitContainer1.SplitterDistance = 332
         Me.SplitContainer1.TabIndex = 84
         Me.SplitContainer1.TabStop = False
@@ -254,7 +256,7 @@ Partial Class Form1
         Me.ToolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.ToolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel_SizeMode, Me.ToolStripComboBox_SizeMode, Me.ToolStripLabel_ZoomLvl})
-        Me.ToolStrip1.Location = New System.Drawing.Point(0, 249)
+        Me.ToolStrip1.Location = New System.Drawing.Point(0, 266)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Size = New System.Drawing.Size(332, 25)
         Me.ToolStrip1.TabIndex = 89
@@ -285,10 +287,22 @@ Partial Class Form1
         Me.ToolStripLabel_ZoomLvl.Size = New System.Drawing.Size(69, 22)
         Me.ToolStripLabel_ZoomLvl.Text = "Zoom: 100%"
         '
+        'CheckBox_NinePatchMode
+        '
+        Me.CheckBox_NinePatchMode.AutoSize = True
+        Me.CheckBox_NinePatchMode.Location = New System.Drawing.Point(58, 16)
+        Me.CheckBox_NinePatchMode.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
+        Me.CheckBox_NinePatchMode.Name = "CheckBox_NinePatchMode"
+        Me.CheckBox_NinePatchMode.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.CheckBox_NinePatchMode.Size = New System.Drawing.Size(113, 17)
+        Me.CheckBox_NinePatchMode.TabIndex = 21
+        Me.CheckBox_NinePatchMode.Text = " :Nine patch mode"
+        Me.CheckBox_NinePatchMode.UseVisualStyleBackColor = True
+        '
         'PictureBox_SpriteSheet
         '
         Me.PictureBox_SpriteSheet.BackColor = System.Drawing.Color.FromArgb(CType(CType(46, Byte), Integer), CType(CType(49, Byte), Integer), CType(CType(54, Byte), Integer))
-        Me.PictureBox_SpriteSheet.Location = New System.Drawing.Point(232, 32)
+        Me.PictureBox_SpriteSheet.Location = New System.Drawing.Point(232, 48)
         Me.PictureBox_SpriteSheet.Name = "PictureBox_SpriteSheet"
         Me.PictureBox_SpriteSheet.Size = New System.Drawing.Size(88, 72)
         Me.PictureBox_SpriteSheet.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -303,7 +317,7 @@ Partial Class Form1
         Me.Button_SelectExportDirectory.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Button_SelectExportDirectory.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button_SelectExportDirectory.ForeColor = System.Drawing.Color.WhiteSmoke
-        Me.Button_SelectExportDirectory.Location = New System.Drawing.Point(272, 192)
+        Me.Button_SelectExportDirectory.Location = New System.Drawing.Point(272, 208)
         Me.Button_SelectExportDirectory.Name = "Button_SelectExportDirectory"
         Me.Button_SelectExportDirectory.Size = New System.Drawing.Size(72, 24)
         Me.Button_SelectExportDirectory.TabIndex = 5
@@ -317,7 +331,7 @@ Partial Class Form1
         Me.Button_SplitSpriteSheet.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Button_SplitSpriteSheet.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button_SplitSpriteSheet.ForeColor = System.Drawing.Color.WhiteSmoke
-        Me.Button_SplitSpriteSheet.Location = New System.Drawing.Point(120, 232)
+        Me.Button_SplitSpriteSheet.Location = New System.Drawing.Point(120, 248)
         Me.Button_SplitSpriteSheet.Name = "Button_SplitSpriteSheet"
         Me.Button_SplitSpriteSheet.Size = New System.Drawing.Size(144, 32)
         Me.Button_SplitSpriteSheet.TabIndex = 6
@@ -330,7 +344,7 @@ Partial Class Form1
         Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
         Me.ShapeContainer1.Name = "ShapeContainer1"
         Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.RectangleShape2, Me.RectangleShape3, Me.RectangleShape4, Me.RectangleShape5})
-        Me.ShapeContainer1.Size = New System.Drawing.Size(354, 274)
+        Me.ShapeContainer1.Size = New System.Drawing.Size(354, 291)
         Me.ShapeContainer1.TabIndex = 20
         Me.ShapeContainer1.TabStop = False
         '
@@ -342,10 +356,10 @@ Partial Class Form1
         Me.RectangleShape2.CornerRadius = 3
         Me.RectangleShape2.FillColor = System.Drawing.Color.WhiteSmoke
         Me.RectangleShape2.FillGradientColor = System.Drawing.Color.WhiteSmoke
-        Me.RectangleShape2.Location = New System.Drawing.Point(155, 31)
+        Me.RectangleShape2.Location = New System.Drawing.Point(152, 48)
         Me.RectangleShape2.Name = "RectangleShape2"
         Me.RectangleShape2.SelectionColor = System.Drawing.Color.Transparent
-        Me.RectangleShape2.Size = New System.Drawing.Size(68, 32)
+        Me.RectangleShape2.Size = New System.Drawing.Size(72, 32)
         '
         'RectangleShape3
         '
@@ -355,10 +369,10 @@ Partial Class Form1
         Me.RectangleShape3.CornerRadius = 3
         Me.RectangleShape3.FillColor = System.Drawing.Color.WhiteSmoke
         Me.RectangleShape3.FillGradientColor = System.Drawing.Color.WhiteSmoke
-        Me.RectangleShape3.Location = New System.Drawing.Point(155, 72)
+        Me.RectangleShape3.Location = New System.Drawing.Point(152, 88)
         Me.RectangleShape3.Name = "RectangleShape3"
         Me.RectangleShape3.SelectionColor = System.Drawing.Color.Transparent
-        Me.RectangleShape3.Size = New System.Drawing.Size(68, 32)
+        Me.RectangleShape3.Size = New System.Drawing.Size(72, 32)
         '
         'RectangleShape4
         '
@@ -368,7 +382,7 @@ Partial Class Form1
         Me.RectangleShape4.CornerRadius = 3
         Me.RectangleShape4.FillColor = System.Drawing.Color.WhiteSmoke
         Me.RectangleShape4.FillGradientColor = System.Drawing.Color.WhiteSmoke
-        Me.RectangleShape4.Location = New System.Drawing.Point(123, 153)
+        Me.RectangleShape4.Location = New System.Drawing.Point(120, 168)
         Me.RectangleShape4.Name = "RectangleShape4"
         Me.RectangleShape4.SelectionColor = System.Drawing.Color.Transparent
         Me.RectangleShape4.Size = New System.Drawing.Size(136, 24)
@@ -381,7 +395,7 @@ Partial Class Form1
         Me.RectangleShape5.CornerRadius = 3
         Me.RectangleShape5.FillColor = System.Drawing.Color.WhiteSmoke
         Me.RectangleShape5.FillGradientColor = System.Drawing.Color.WhiteSmoke
-        Me.RectangleShape5.Location = New System.Drawing.Point(123, 193)
+        Me.RectangleShape5.Location = New System.Drawing.Point(120, 208)
         Me.RectangleShape5.Name = "RectangleShape5"
         Me.RectangleShape5.SelectionColor = System.Drawing.Color.Transparent
         Me.RectangleShape5.Size = New System.Drawing.Size(136, 24)
@@ -441,7 +455,7 @@ Partial Class Form1
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(54, Byte), Integer), CType(CType(57, Byte), Integer), CType(CType(62, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(690, 306)
+        Me.ClientSize = New System.Drawing.Size(690, 323)
         Me.Controls.Add(Me.SplitContainer1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.ForeColor = System.Drawing.Color.WhiteSmoke
@@ -504,4 +518,5 @@ Partial Class Form1
     Friend WithEvents ToolStripComboBox_SizeMode As ToolStripComboBox
     Friend WithEvents ToolStripLabel_ZoomLvl As ToolStripLabel
     Friend WithEvents PixelBoxGrid As PixelBox
+    Friend WithEvents CheckBox_NinePatchMode As CheckBox
 End Class
