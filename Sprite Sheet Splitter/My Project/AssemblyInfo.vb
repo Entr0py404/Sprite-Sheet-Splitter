@@ -8,7 +8,7 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("Sprite Sheet Splitter")>
-<Assembly: AssemblyDescription("Sprite Sheet Splitter")>
+<Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("Entropy Software")>
 <Assembly: AssemblyProduct("Sprite Sheet Splitter")>
 <Assembly: AssemblyCopyright("MIT")>
@@ -31,4 +31,4 @@ Imports System.Runtime.InteropServices
 ' <Assembly: AssemblyVersion("1.0.*")>
 
 <Assembly: AssemblyVersion("1.0.0.0")>
-<Assembly: AssemblyFileVersion("1.0.0.0")>
+<Assembly: AssemblyFileVersion("1.1.0.0")>

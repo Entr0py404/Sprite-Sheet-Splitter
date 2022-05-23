@@ -1,8 +1,7 @@
-﻿Imports System.ComponentModel
-Public Class Form1
+﻿Public Class Form1
     Dim EstimatedSpriteWidth As Integer = 0
     Dim EstimatedSpriteHeight As Integer = 0
-    Public GridColor As New Pen(Color.FromArgb(0, 255, 128)) 'Color of the lines
+    Public GridColor As New Pen(Color.FromArgb(0, 255, 128), 2) 'Color of the lines
     Dim ZoomCounter As Integer = 100
     ReadOnly SupportedIamgeFormats() As String = {".png", ".bmp", ".jpeg", ".jpg", ".tiff", ".tif"}
     ReadOnly NinePatchDirections() As String = {"northwest", "north", "northeast", "west", "center", "east", "southwest", "south", "southeast"}
@@ -16,12 +15,30 @@ Public Class Form1
         Label_EstimatedSpriteSize.ForeColor = GridColor.Color
         ToolStripComboBox_SizeMode.SelectedIndex = My.Settings.SizeModeIndex
         EventsOn = True
+        MenuStrip1.Renderer = New ToolStripProfessionalRenderer(New ColorTable())
+        ToolStrip1.Renderer = New ToolStripProfessionalRenderer(New ColorTable())
     End Sub
     'NumericUpDownH - ValueChanged
-    Private Sub NumericUpDownH_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDownH.ValueChanged
+    Private Sub NumericUpDownH_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_Hori.ValueChanged
+        H_ValueChanged()
+    End Sub
+    'NumericUpDown_Offset_H - ValueChanged
+    Private Sub NumericUpDown_Offset_H_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_Offset_Hori.ValueChanged
+        H_ValueChanged()
+    End Sub
+    'NumericUpDownV - ValueChanged
+    Private Sub NumericUpDownV_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_Vert.ValueChanged
+        V_ValueChanged()
+    End Sub
+    'NumericUpDown_Offset_V - ValueChanged
+    Private Sub NumericUpDown_Offset_V_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_Offset_Vert.ValueChanged
+        V_ValueChanged()
+    End Sub
+    'H_ValueChanged()
+    Private Sub H_ValueChanged()
         If PictureBox_SpriteSheet.Image IsNot Nothing Then
-            If NumericUpDownH.Value > 1 Then
-                EstimatedSpriteWidth = CInt(PictureBox_SpriteSheet.Image.Width / NumericUpDownH.Value)
+            If NumericUpDown_Hori.Value > 1 Then
+                EstimatedSpriteWidth = CInt(PictureBox_SpriteSheet.Image.Width / NumericUpDown_Hori.Value) - CInt(NumericUpDown_Offset_Hori.Value)
             Else
                 EstimatedSpriteWidth = PictureBox_SpriteSheet.Image.Width
             End If
@@ -29,11 +46,11 @@ Public Class Form1
             MakeTransparent_GridBitmap()
         End If
     End Sub
-    'NumericUpDownV - ValueChanged
-    Private Sub NumericUpDownV_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDownV.ValueChanged
+    'V_ValueChanged()
+    Private Sub V_ValueChanged()
         If PictureBox_SpriteSheet.Image IsNot Nothing Then
-            If NumericUpDownV.Value > 1 Then
-                EstimatedSpriteHeight = CInt(PictureBox_SpriteSheet.Image.Height / NumericUpDownV.Value)
+            If NumericUpDown_Vert.Value > 1 Then
+                EstimatedSpriteHeight = CInt(PictureBox_SpriteSheet.Image.Height / NumericUpDown_Vert.Value) - CInt(NumericUpDown_Offset_Vert.Value)
             Else
                 EstimatedSpriteHeight = PictureBox_SpriteSheet.Image.Height
             End If
@@ -50,20 +67,25 @@ Public Class Form1
     'Button_SplitSheet - Click
     Private Sub Button_SplitSpriteStrip_Click(sender As Object, e As EventArgs) Handles Button_SplitSpriteSheet.Click
         If PictureBox_SpriteSheet.Image IsNot Nothing Then
+            Dim Offset_Vert As Integer = CInt(NumericUpDown_Offset_Vert.Value)
             Dim MainLoopIndex As Integer = 0
-            For indexH As Integer = 0 To CInt(NumericUpDownV.Value - 1)
-                For indexW As Integer = 0 To CInt(NumericUpDownH.Value - 1)
+            For indexH As Integer = 0 To CInt(NumericUpDown_Vert.Value - 1)
+                Dim Offset_Hori As Integer = CInt(NumericUpDown_Offset_Hori.Value)
+                For indexW As Integer = 0 To CInt(NumericUpDown_Hori.Value - 1)
                     MainLoopIndex += 1
                     Dim CropRect As Rectangle
-                    Dim W As Integer = 0
+
+                    Dim CropRect_X As Integer = 0
                     If indexW > 0 Then
-                        W = EstimatedSpriteWidth * indexW
+                        CropRect_X = (EstimatedSpriteWidth * indexW) + Offset_Hori * indexW
                     End If
-                    Dim H As Integer = 0
+
+                    Dim CropRect_Y As Integer = 0
                     If indexH > 0 Then
-                        H = EstimatedSpriteHeight * indexH
+                        CropRect_Y = (EstimatedSpriteHeight * indexH) + Offset_Vert * indexH
                     End If
-                    CropRect = New Rectangle(W, H, EstimatedSpriteWidth, EstimatedSpriteHeight)
+
+                    CropRect = New Rectangle(CropRect_X, CropRect_Y, EstimatedSpriteWidth, EstimatedSpriteHeight)
                     Dim CropImage = New Bitmap(CropRect.Width, CropRect.Height)
                     Using grp = Graphics.FromImage(CropImage)
                         grp.SmoothingMode = SmoothingMode.None
@@ -93,20 +115,20 @@ Public Class Form1
         If PictureBox_SpriteSheet.Image IsNot Nothing Then
             Dim x As Integer
             Dim y As Integer
-            Dim intSpacingH As Integer = CInt(PictureBox_SpriteSheet.Image.Width / NumericUpDownH.Value)
-            Dim intSpacingV As Integer = CInt(PictureBox_SpriteSheet.Image.Height / NumericUpDownV.Value)
+            Dim intSpacingH As Integer = CInt(PictureBox_SpriteSheet.Image.Width / NumericUpDown_Hori.Value)
+            Dim intSpacingV As Integer = CInt(PictureBox_SpriteSheet.Image.Height / NumericUpDown_Vert.Value)
             Dim GridBitmap = New Bitmap(PictureBox_SpriteSheet.Image.Width + 1, PictureBox_SpriteSheet.Image.Height + 1)
             Using grp = Graphics.FromImage(GridBitmap)
                 grp.CompositingQuality = CompositingQuality.HighQuality
                 grp.DrawImage(PictureBox_SpriteSheet.Image, 0, 0, GridBitmap.Width - 1, GridBitmap.Height - 1)
-                'Draw the horizontal lines
-                y = PictureBox_SpriteSheet.Image.Height
-                For x = 0 To PictureBox_SpriteSheet.Image.Width + 1 Step intSpacingH
+                'Draw the vertical lines
+                y = PictureBox_SpriteSheet.Image.Height + 1
+                For x = 1 - CInt(NumericUpDown_Offset_Hori.Value) To PictureBox_SpriteSheet.Image.Width + 1 Step intSpacingH
                     grp.DrawLine(GridColor, New Point(x, 0), New Point(x, y))
                 Next
-                'Draw the vertical lines
-                x = PictureBox_SpriteSheet.Image.Width
-                For y = 0 To PictureBox_SpriteSheet.Image.Height + 1 Step intSpacingV
+                'Draw the horizontal lines
+                x = PictureBox_SpriteSheet.Image.Width '+ 1
+                For y = 1 - CInt(NumericUpDown_Offset_Vert.Value) To PictureBox_SpriteSheet.Image.Height + 1 Step intSpacingV
                     grp.DrawLine(GridColor, New Point(0, y), New Point(x, y))
                 Next
                 grp.Dispose()
@@ -123,9 +145,13 @@ Public Class Form1
                 PictureBox_SpriteSheet.Image = GetMemoryBitmapFromFile(files(0))
                 TextBox_FileName.Text = Path.GetFileNameWithoutExtension(files(0))
                 TextBox_ExportDirectory.Text = Path.GetDirectoryName(files(0))
-                EstimatedSpriteWidth = CInt(PictureBox_SpriteSheet.Image.Width / NumericUpDownH.Value)
-                EstimatedSpriteHeight = CInt(PictureBox_SpriteSheet.Image.Height / NumericUpDownV.Value)
+                EstimatedSpriteWidth = CInt(PictureBox_SpriteSheet.Image.Width / NumericUpDown_Hori.Value) - CInt(NumericUpDown_Offset_Hori.Value)
+                EstimatedSpriteHeight = CInt(PictureBox_SpriteSheet.Image.Height / NumericUpDown_Vert.Value) - CInt(NumericUpDown_Offset_Vert.Value)
                 Label_EstimatedSpriteSize.Text = "Estimated Sprite Size (" & EstimatedSpriteWidth & "x" & EstimatedSpriteHeight & ")"
+
+                NumericUpDown_Offset_Hori.Maximum = PictureBox_SpriteSheet.Image.Width
+                NumericUpDown_Offset_Vert.Maximum = PictureBox_SpriteSheet.Image.Height
+
                 MakeTransparent_GridBitmap()
             Catch ex As Exception
                 MsgBox("Problem opening file.", MsgBoxStyle.Critical)
@@ -182,8 +208,8 @@ Public Class Form1
     'ClearToolStripMenuItem - Click
     Private Sub ClearToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearToolStripMenuItem.Click
         ClearAllForNext()
-        NumericUpDownH.Value = 1
-        NumericUpDownV.Value = 1
+        NumericUpDown_Hori.Value = 1
+        NumericUpDown_Vert.Value = 1
     End Sub
     'CompletionNotificationToolStripMenuItem - CheckedChanged
     Private Sub CompletionNotificationToolStripMenuItem_CheckedChanged(sender As Object, e As EventArgs) Handles CompletionNotificationToolStripMenuItem.CheckedChanged
@@ -272,41 +298,13 @@ Public Class Form1
     'CheckBox_NinePatchMode - CheckedChanged
     Private Sub CheckBox_NinePatchMode_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox_NinePatchMode.CheckedChanged
         If CheckBox_NinePatchMode.Checked = True Then
-            NumericUpDownH.Value = 3
-            NumericUpDownV.Value = 3
-            NumericUpDownH.Enabled = False
-            NumericUpDownV.Enabled = False
+            NumericUpDown_Hori.Value = 3
+            NumericUpDown_Vert.Value = 3
+            NumericUpDown_Hori.Enabled = False
+            NumericUpDown_Vert.Enabled = False
         Else
-            NumericUpDownH.Enabled = True
-            NumericUpDownV.Enabled = True
+            NumericUpDown_Hori.Enabled = True
+            NumericUpDown_Vert.Enabled = True
         End If
-    End Sub
-End Class
-
-Public Class PixelBox
-    Inherits PictureBox
-
-    <Category("Behavior")>
-    <DefaultValue(InterpolationMode.NearestNeighbor)>
-    Public Property InterpolationMode As InterpolationMode = InterpolationMode.NearestNeighbor
-
-    <Category("Behavior")>
-    <DefaultValue(PixelOffsetMode.Default)>
-    Public Property PixelOffsetMode As PixelOffsetMode = PixelOffsetMode.Default
-
-    <Category("Behavior")>
-    <DefaultValue(SmoothingMode.Default)>
-    Public Property SmoothingMode As SmoothingMode = SmoothingMode.Default
-
-    <Category("Behavior")>
-    <DefaultValue(CompositingQuality.Default)>
-    Public Property CompositingQuality As CompositingQuality = CompositingQuality.Default
-
-    Protected Overrides Sub OnPaint(e As PaintEventArgs)
-        e.Graphics.InterpolationMode = Me.InterpolationMode
-        e.Graphics.PixelOffsetMode = Me.PixelOffsetMode
-        e.Graphics.SmoothingMode = Me.SmoothingMode
-        e.Graphics.CompositingQuality = Me.CompositingQuality
-        MyBase.OnPaint(e)
     End Sub
 End Class
