@@ -34,6 +34,7 @@ Partial Class Form1
         Me.Label_ExportDirectory = New System.Windows.Forms.Label()
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
         Me.Panel_Image = New System.Windows.Forms.Panel()
+        Me.PixelBoxGrid = New Sprite_Sheet_Splitter.PixelBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ColorDialog1 = New System.Windows.Forms.ColorDialog()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
@@ -46,7 +47,6 @@ Partial Class Form1
         Me.NumericUpDown_Offset_Vert = New System.Windows.Forms.NumericUpDown()
         Me.NumericUpDown_Offset_Hori = New System.Windows.Forms.NumericUpDown()
         Me.CheckBox_NinePatchMode = New System.Windows.Forms.CheckBox()
-        Me.PictureBox_SpriteSheet = New System.Windows.Forms.PictureBox()
         Me.Button_SelectExportDirectory = New System.Windows.Forms.Button()
         Me.Button_SplitSpriteSheet = New System.Windows.Forms.Button()
         Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
@@ -61,10 +61,10 @@ Partial Class Form1
         Me.ClearToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GridColorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CompletionNotificationToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.PixelBoxGrid = New Sprite_Sheet_Splitter.PixelBox()
         CType(Me.NumericUpDown_Hori, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_Vert, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel_Image.SuspendLayout()
+        CType(Me.PixelBoxGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -73,9 +73,7 @@ Partial Class Form1
         Me.ToolStrip1.SuspendLayout()
         CType(Me.NumericUpDown_Offset_Vert, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_Offset_Hori, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox_SpriteSheet, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MenuStrip1.SuspendLayout()
-        CType(Me.PixelBoxGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'NumericUpDown_Hori
@@ -175,6 +173,7 @@ Partial Class Form1
         '
         'Panel_Image
         '
+        Me.Panel_Image.AllowDrop = True
         Me.Panel_Image.BackColor = System.Drawing.Color.FromArgb(CType(CType(46, Byte), Integer), CType(CType(49, Byte), Integer), CType(CType(54, Byte), Integer))
         Me.Panel_Image.Controls.Add(Me.PixelBoxGrid)
         Me.Panel_Image.Dock = System.Windows.Forms.DockStyle.Fill
@@ -182,6 +181,18 @@ Partial Class Form1
         Me.Panel_Image.Name = "Panel_Image"
         Me.Panel_Image.Size = New System.Drawing.Size(418, 318)
         Me.Panel_Image.TabIndex = 82
+        '
+        'PixelBoxGrid
+        '
+        Me.PixelBoxGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.PixelBoxGrid.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality
+        Me.PixelBoxGrid.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.PixelBoxGrid.Location = New System.Drawing.Point(0, 0)
+        Me.PixelBoxGrid.Name = "PixelBoxGrid"
+        Me.PixelBoxGrid.Size = New System.Drawing.Size(418, 318)
+        Me.PixelBoxGrid.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PixelBoxGrid.TabIndex = 85
+        Me.PixelBoxGrid.TabStop = False
         '
         'Label1
         '
@@ -219,7 +230,6 @@ Partial Class Form1
         Me.SplitContainer1.Panel2.Controls.Add(Me.NumericUpDown_Offset_Hori)
         Me.SplitContainer1.Panel2.Controls.Add(Me.CheckBox_NinePatchMode)
         Me.SplitContainer1.Panel2.Controls.Add(Me.NumericUpDown_Hori)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.PictureBox_SpriteSheet)
         Me.SplitContainer1.Panel2.Controls.Add(Me.NumericUpDown_Vert)
         Me.SplitContainer1.Panel2.Controls.Add(Me.TextBox_ExportDirectory)
         Me.SplitContainer1.Panel2.Controls.Add(Me.TextBox_FileName)
@@ -330,17 +340,6 @@ Partial Class Form1
         Me.CheckBox_NinePatchMode.TabIndex = 21
         Me.CheckBox_NinePatchMode.Text = " :Nine patch mode"
         Me.CheckBox_NinePatchMode.UseVisualStyleBackColor = True
-        '
-        'PictureBox_SpriteSheet
-        '
-        Me.PictureBox_SpriteSheet.BackColor = System.Drawing.Color.FromArgb(CType(CType(46, Byte), Integer), CType(CType(49, Byte), Integer), CType(CType(54, Byte), Integer))
-        Me.PictureBox_SpriteSheet.Location = New System.Drawing.Point(272, 288)
-        Me.PictureBox_SpriteSheet.Name = "PictureBox_SpriteSheet"
-        Me.PictureBox_SpriteSheet.Size = New System.Drawing.Size(88, 72)
-        Me.PictureBox_SpriteSheet.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PictureBox_SpriteSheet.TabIndex = 1
-        Me.PictureBox_SpriteSheet.TabStop = False
-        Me.PictureBox_SpriteSheet.Visible = False
         '
         'Button_SelectExportDirectory
         '
@@ -463,6 +462,7 @@ Partial Class Form1
         'MenuStrip1
         '
         Me.MenuStrip1.BackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(30, Byte), Integer), CType(CType(34, Byte), Integer))
+        Me.MenuStrip1.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.MenuStrip1.ImageScalingSize = New System.Drawing.Size(24, 24)
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
@@ -477,7 +477,7 @@ Partial Class Form1
         Me.ToolStripMenuItem1.ForeColor = System.Drawing.Color.WhiteSmoke
         Me.ToolStripMenuItem1.Image = Global.Sprite_Sheet_Splitter.My.Resources.Resources.Settings
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(85, 28)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(102, 28)
         Me.ToolStripMenuItem1.Text = "Settings"
         '
         'ClearToolStripMenuItem
@@ -486,7 +486,7 @@ Partial Class Form1
         Me.ClearToolStripMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke
         Me.ClearToolStripMenuItem.Image = Global.Sprite_Sheet_Splitter.My.Resources.Resources.Clear
         Me.ClearToolStripMenuItem.Name = "ClearToolStripMenuItem"
-        Me.ClearToolStripMenuItem.Size = New System.Drawing.Size(203, 22)
+        Me.ClearToolStripMenuItem.Size = New System.Drawing.Size(254, 30)
         Me.ClearToolStripMenuItem.Text = "Clear"
         '
         'GridColorToolStripMenuItem
@@ -495,7 +495,7 @@ Partial Class Form1
         Me.GridColorToolStripMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke
         Me.GridColorToolStripMenuItem.Image = Global.Sprite_Sheet_Splitter.My.Resources.Resources.Color
         Me.GridColorToolStripMenuItem.Name = "GridColorToolStripMenuItem"
-        Me.GridColorToolStripMenuItem.Size = New System.Drawing.Size(203, 22)
+        Me.GridColorToolStripMenuItem.Size = New System.Drawing.Size(254, 30)
         Me.GridColorToolStripMenuItem.Text = "Grid Color"
         '
         'CompletionNotificationToolStripMenuItem
@@ -507,20 +507,8 @@ Partial Class Form1
         Me.CompletionNotificationToolStripMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke
         Me.CompletionNotificationToolStripMenuItem.Image = Global.Sprite_Sheet_Splitter.My.Resources.Resources.Notification
         Me.CompletionNotificationToolStripMenuItem.Name = "CompletionNotificationToolStripMenuItem"
-        Me.CompletionNotificationToolStripMenuItem.Size = New System.Drawing.Size(203, 22)
+        Me.CompletionNotificationToolStripMenuItem.Size = New System.Drawing.Size(254, 30)
         Me.CompletionNotificationToolStripMenuItem.Text = "Completion Notification"
-        '
-        'PixelBoxGrid
-        '
-        Me.PixelBoxGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.PixelBoxGrid.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality
-        Me.PixelBoxGrid.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PixelBoxGrid.Location = New System.Drawing.Point(0, 0)
-        Me.PixelBoxGrid.Name = "PixelBoxGrid"
-        Me.PixelBoxGrid.Size = New System.Drawing.Size(418, 318)
-        Me.PixelBoxGrid.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PixelBoxGrid.TabIndex = 85
-        Me.PixelBoxGrid.TabStop = False
         '
         'Form1
         '
@@ -539,6 +527,7 @@ Partial Class Form1
         CType(Me.NumericUpDown_Hori, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown_Vert, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel_Image.ResumeLayout(False)
+        CType(Me.PixelBoxGrid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel1.PerformLayout()
         Me.SplitContainer1.Panel2.ResumeLayout(False)
@@ -550,17 +539,14 @@ Partial Class Form1
         Me.ToolStrip1.PerformLayout()
         CType(Me.NumericUpDown_Offset_Vert, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown_Offset_Hori, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox_SpriteSheet, System.ComponentModel.ISupportInitialize).EndInit()
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
-        CType(Me.PixelBoxGrid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
 
     Friend WithEvents NumericUpDown_Hori As NumericUpDown
-    Friend WithEvents PictureBox_SpriteSheet As PictureBox
     Friend WithEvents Label3 As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents NumericUpDown_Vert As NumericUpDown

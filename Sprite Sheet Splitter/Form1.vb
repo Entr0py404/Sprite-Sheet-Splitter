@@ -6,9 +6,11 @@
     ReadOnly SupportedIamgeFormats() As String = {".png", ".bmp", ".jpeg", ".jpg", ".tiff", ".tif"}
     ReadOnly NinePatchDirections() As String = {"northwest", "north", "northeast", "west", "center", "east", "southwest", "south", "southeast"}
     Dim EventsOn As Boolean = False
+    Dim SpriteSheet_Image As Bitmap
+    'Dim SpriteSheet_Image As Image
+
     'Form1 - Load
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Panel_Image.AllowDrop = True
         'Load setttings
         CompletionNotificationToolStripMenuItem.Checked = My.Settings.CompletionNotification
         GridColor.Color = My.Settings.GridColor
@@ -36,11 +38,11 @@
     End Sub
     'H_ValueChanged()
     Private Sub H_ValueChanged()
-        If PictureBox_SpriteSheet.Image IsNot Nothing Then
+        If SpriteSheet_Image IsNot Nothing Then
             If NumericUpDown_Hori.Value > 1 Then
-                EstimatedSpriteWidth = CInt(PictureBox_SpriteSheet.Image.Width / NumericUpDown_Hori.Value) - CInt(NumericUpDown_Offset_Hori.Value)
+                EstimatedSpriteWidth = CInt(SpriteSheet_Image.Width / NumericUpDown_Hori.Value) - CInt(NumericUpDown_Offset_Hori.Value)
             Else
-                EstimatedSpriteWidth = PictureBox_SpriteSheet.Image.Width
+                EstimatedSpriteWidth = SpriteSheet_Image.Width
             End If
             Label_EstimatedSpriteSize.Text = "Estimated Sprite Size (" & EstimatedSpriteWidth & "x" & EstimatedSpriteHeight & ")"
             MakeTransparent_GridBitmap()
@@ -48,11 +50,11 @@
     End Sub
     'V_ValueChanged()
     Private Sub V_ValueChanged()
-        If PictureBox_SpriteSheet.Image IsNot Nothing Then
+        If SpriteSheet_Image IsNot Nothing Then
             If NumericUpDown_Vert.Value > 1 Then
-                EstimatedSpriteHeight = CInt(PictureBox_SpriteSheet.Image.Height / NumericUpDown_Vert.Value) - CInt(NumericUpDown_Offset_Vert.Value)
+                EstimatedSpriteHeight = CInt(SpriteSheet_Image.Height / NumericUpDown_Vert.Value) - CInt(NumericUpDown_Offset_Vert.Value)
             Else
-                EstimatedSpriteHeight = PictureBox_SpriteSheet.Image.Height
+                EstimatedSpriteHeight = SpriteSheet_Image.Height
             End If
             Label_EstimatedSpriteSize.Text = "Estimated Sprite Size (" & EstimatedSpriteWidth & "x" & EstimatedSpriteHeight & ")"
             MakeTransparent_GridBitmap()
@@ -66,7 +68,7 @@
     End Sub
     'Button_SplitSheet - Click
     Private Sub Button_SplitSpriteStrip_Click(sender As Object, e As EventArgs) Handles Button_SplitSpriteSheet.Click
-        If PictureBox_SpriteSheet.Image IsNot Nothing Then
+        If SpriteSheet_Image IsNot Nothing Then
             Dim Offset_Vert As Integer = CInt(NumericUpDown_Offset_Vert.Value)
             Dim MainLoopIndex As Integer = 0
             For indexH As Integer = 0 To CInt(NumericUpDown_Vert.Value - 1)
@@ -91,7 +93,7 @@
                         grp.SmoothingMode = SmoothingMode.None
                         grp.InterpolationMode = InterpolationMode.HighQualityBicubic
                         grp.CompositingQuality = CompositingQuality.HighQuality
-                        grp.DrawImage(PictureBox_SpriteSheet.Image, New Rectangle(0, 0, CropRect.Width, CropRect.Height), CropRect, GraphicsUnit.Pixel)
+                        grp.DrawImage(SpriteSheet_Image, New Rectangle(0, 0, CropRect.Width, CropRect.Height), CropRect, GraphicsUnit.Pixel)
                         grp.Dispose()
                     End Using
 
@@ -112,23 +114,23 @@
     End Sub
     'MakeTransparent_GridBitmap
     Private Sub MakeTransparent_GridBitmap()
-        If PictureBox_SpriteSheet.Image IsNot Nothing Then
+        If SpriteSheet_Image IsNot Nothing Then
             Dim x As Integer
             Dim y As Integer
-            Dim intSpacingH As Integer = CInt(PictureBox_SpriteSheet.Image.Width / NumericUpDown_Hori.Value)
-            Dim intSpacingV As Integer = CInt(PictureBox_SpriteSheet.Image.Height / NumericUpDown_Vert.Value)
-            Dim GridBitmap = New Bitmap(PictureBox_SpriteSheet.Image.Width + 1, PictureBox_SpriteSheet.Image.Height + 1)
+            Dim intSpacingH As Integer = CInt(SpriteSheet_Image.Width / NumericUpDown_Hori.Value)
+            Dim intSpacingV As Integer = CInt(SpriteSheet_Image.Height / NumericUpDown_Vert.Value)
+            Dim GridBitmap = New Bitmap(SpriteSheet_Image.Width + 1, SpriteSheet_Image.Height + 1)
             Using grp = Graphics.FromImage(GridBitmap)
                 grp.CompositingQuality = CompositingQuality.HighQuality
-                grp.DrawImage(PictureBox_SpriteSheet.Image, 0, 0, GridBitmap.Width - 1, GridBitmap.Height - 1)
+                grp.DrawImage(SpriteSheet_Image, 0, 0, GridBitmap.Width - 1, GridBitmap.Height - 1)
                 'Draw the vertical lines
-                y = PictureBox_SpriteSheet.Image.Height + 1
-                For x = 1 - CInt(NumericUpDown_Offset_Hori.Value) To PictureBox_SpriteSheet.Image.Width + 1 Step intSpacingH
+                y = SpriteSheet_Image.Height + 1
+                For x = 1 - CInt(NumericUpDown_Offset_Hori.Value) To SpriteSheet_Image.Width + 1 Step intSpacingH
                     grp.DrawLine(GridColor, New Point(x, 0), New Point(x, y))
                 Next
                 'Draw the horizontal lines
-                x = PictureBox_SpriteSheet.Image.Width '+ 1
-                For y = 1 - CInt(NumericUpDown_Offset_Vert.Value) To PictureBox_SpriteSheet.Image.Height + 1 Step intSpacingV
+                x = SpriteSheet_Image.Width '+ 1
+                For y = 1 - CInt(NumericUpDown_Offset_Vert.Value) To SpriteSheet_Image.Height + 1 Step intSpacingV
                     grp.DrawLine(GridColor, New Point(0, y), New Point(x, y))
                 Next
                 grp.Dispose()
@@ -142,15 +144,18 @@
         If files.Length <> 0 Then
             Try
                 ClearPictureboxes()
-                PictureBox_SpriteSheet.Image = GetMemoryBitmapFromFile(files(0))
+
+                SpriteSheet_Image = New Bitmap(Image.FromFile(files(0)))
+                'SpriteSheet_Image = Image.FromFile(files(0))
+
                 TextBox_FileName.Text = Path.GetFileNameWithoutExtension(files(0))
                 TextBox_ExportDirectory.Text = Path.GetDirectoryName(files(0))
-                EstimatedSpriteWidth = CInt(PictureBox_SpriteSheet.Image.Width / NumericUpDown_Hori.Value) - CInt(NumericUpDown_Offset_Hori.Value)
-                EstimatedSpriteHeight = CInt(PictureBox_SpriteSheet.Image.Height / NumericUpDown_Vert.Value) - CInt(NumericUpDown_Offset_Vert.Value)
+                EstimatedSpriteWidth = CInt(SpriteSheet_Image.Width / NumericUpDown_Hori.Value) - CInt(NumericUpDown_Offset_Hori.Value)
+                EstimatedSpriteHeight = CInt(SpriteSheet_Image.Height / NumericUpDown_Vert.Value) - CInt(NumericUpDown_Offset_Vert.Value)
                 Label_EstimatedSpriteSize.Text = "Estimated Sprite Size (" & EstimatedSpriteWidth & "x" & EstimatedSpriteHeight & ")"
 
-                NumericUpDown_Offset_Hori.Maximum = PictureBox_SpriteSheet.Image.Width
-                NumericUpDown_Offset_Vert.Maximum = PictureBox_SpriteSheet.Image.Height
+                NumericUpDown_Offset_Hori.Maximum = SpriteSheet_Image.Width
+                NumericUpDown_Offset_Vert.Maximum = SpriteSheet_Image.Height
 
                 MakeTransparent_GridBitmap()
             Catch ex As Exception
@@ -261,19 +266,10 @@
             End If
         End If
     End Sub
-    'GetMemoryBitmapFromFile(path)
-    Public Shared Function GetMemoryBitmapFromFile(path As String) As Bitmap
-        Dim bm As Bitmap
-        Using img As Image = Image.FromFile(path)
-            bm = New Bitmap(img)
-        End Using
-        Return bm
-    End Function
     'Clear Pictureboxes
     Private Sub ClearPictureboxes()
-        PictureBox_SpriteSheet.Image = Nothing
+        SpriteSheet_Image = Nothing
         PixelBoxGrid.Image = Nothing
-        PictureBox_SpriteSheet.Refresh()
         PixelBoxGrid.Refresh()
     End Sub
     'Clear All For Next
