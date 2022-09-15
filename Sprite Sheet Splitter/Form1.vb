@@ -68,51 +68,82 @@
     End Sub
     'Button_SplitSheet - Click
     Private Sub Button_SplitSpriteStrip_Click(sender As Object, e As EventArgs) Handles Button_SplitSpriteSheet.Click
-        If SpriteSheet_Image IsNot Nothing Then
-            Dim Offset_Vert As Integer = CInt(NumericUpDown_Offset_Vert.Value)
-            Dim MainLoopIndex As Integer = 0
-            For indexH As Integer = 0 To CInt(NumericUpDown_Vert.Value - 1)
-                Dim Offset_Hori As Integer = CInt(NumericUpDown_Offset_Hori.Value)
-                For indexW As Integer = 0 To CInt(NumericUpDown_Hori.Value - 1)
-                    MainLoopIndex += 1
-                    Dim CropRect As Rectangle
+        If Not ListBox_Bulk.Items.Count = 0 Then
+            For Each item As String In ListBox_Bulk.Items
+                SpriteSheet_Image = GetMemoryBitmapFromFile(item)
+                SplitSpriteStrip(Path.GetDirectoryName(item), Path.GetFileNameWithoutExtension(item))
+            Next
+            If CompletionNotificationToolStripMenuItem.Checked Then
+                MsgBox("Bulk sprite sheet split complete.", MsgBoxStyle.Information)
+            End If
+            ClearAllForNext()
+        Else
+            If SpriteSheet_Image IsNot Nothing Then
+                SplitSpriteStrip("", "")
+                If CompletionNotificationToolStripMenuItem.Checked Then
+                    MsgBox("Sprite sheet split complete.", MsgBoxStyle.Information)
+                End If
+                ClearAllForNext()
+            End If
+        End If
+    End Sub
+    'SplitSpriteStrip()
+    Private Sub SplitSpriteStrip(imgPath As String, imgNameNoExt As String)
 
-                    Dim CropRect_X As Integer = 0
-                    If indexW > 0 Then
-                        CropRect_X = (EstimatedSpriteWidth * indexW) + Offset_Hori * indexW
-                    End If
+        If Not ListBox_Bulk.Items.Count = 0 Then
+            SpriteSheet_Image = New Bitmap(Image.FromFile(imgPath & "\" & imgNameNoExt & ".png"))
+            EstimatedSpriteWidth = CInt(SpriteSheet_Image.Width / NumericUpDown_Hori.Value) - CInt(NumericUpDown_Offset_Hori.Value)
+            EstimatedSpriteHeight = CInt(SpriteSheet_Image.Height / NumericUpDown_Vert.Value) - CInt(NumericUpDown_Offset_Vert.Value)
+        End If
 
-                    Dim CropRect_Y As Integer = 0
-                    If indexH > 0 Then
-                        CropRect_Y = (EstimatedSpriteHeight * indexH) + Offset_Vert * indexH
-                    End If
+        Dim Offset_Vert As Integer = CInt(NumericUpDown_Offset_Vert.Value)
+        Dim MainLoopIndex As Integer = 0
+        For indexH As Integer = 0 To CInt(NumericUpDown_Vert.Value - 1)
+            Dim Offset_Hori As Integer = CInt(NumericUpDown_Offset_Hori.Value)
+            For indexW As Integer = 0 To CInt(NumericUpDown_Hori.Value - 1)
+                MainLoopIndex += 1
+                Dim CropRect As Rectangle
 
-                    CropRect = New Rectangle(CropRect_X, CropRect_Y, EstimatedSpriteWidth, EstimatedSpriteHeight)
-                    Dim CropImage = New Bitmap(CropRect.Width, CropRect.Height)
-                    Using grp = Graphics.FromImage(CropImage)
-                        grp.SmoothingMode = SmoothingMode.None
-                        grp.InterpolationMode = InterpolationMode.HighQualityBicubic
-                        grp.CompositingQuality = CompositingQuality.HighQuality
-                        grp.DrawImage(SpriteSheet_Image, New Rectangle(0, 0, CropRect.Width, CropRect.Height), CropRect, GraphicsUnit.Pixel)
-                        grp.Dispose()
-                    End Using
+                Dim CropRect_X As Integer = 0
+                If indexW > 0 Then
+                    CropRect_X = (EstimatedSpriteWidth * indexW) + Offset_Hori * indexW
+                End If
 
+                Dim CropRect_Y As Integer = 0
+                If indexH > 0 Then
+                    CropRect_Y = (EstimatedSpriteHeight * indexH) + Offset_Vert * indexH
+                End If
+
+                CropRect = New Rectangle(CropRect_X, CropRect_Y, EstimatedSpriteWidth, EstimatedSpriteHeight)
+                Dim CropImage = New Bitmap(CropRect.Width, CropRect.Height)
+                Using grp = Graphics.FromImage(CropImage)
+                    grp.SmoothingMode = SmoothingMode.None
+                    grp.InterpolationMode = InterpolationMode.HighQualityBicubic
+                    grp.CompositingQuality = CompositingQuality.HighQuality
+                    grp.DrawImage(SpriteSheet_Image, New Rectangle(0, 0, CropRect.Width, CropRect.Height), CropRect, GraphicsUnit.Pixel)
+                    grp.Dispose()
+                End Using
+
+                If ListBox_Bulk.Items.Count = 0 Then
                     If CheckBox_NinePatchMode.Checked = False Then
                         CropImage.Save(TextBox_ExportDirectory.Text & "\" & TextBox_FileName.Text & "_" & MainLoopIndex & ".png", ImageFormat.Png)
                     Else
                         CropImage.Save(TextBox_ExportDirectory.Text & "\9patch_" & TextBox_FileName.Text & "_" & NinePatchDirections(MainLoopIndex - 1) & ".png", ImageFormat.Png)
                     End If
+                Else 'Bulk Mode
+                    If CheckBox_NinePatchMode.Checked = False Then
+                        CropImage.Save(imgPath & "\" & imgNameNoExt & "_" & MainLoopIndex & ".png", ImageFormat.Png)
+                    Else
+                        CropImage.Save(imgPath & "\9patch_" & imgNameNoExt & "_" & NinePatchDirections(MainLoopIndex - 1) & ".png", ImageFormat.Png)
+                    End If
+                End If
 
-                    CropImage.Dispose()
-                Next
+                CropImage.Dispose()
+
             Next
-            If CompletionNotificationToolStripMenuItem.Checked Then
-                MsgBox("Sprite sheet split complete.", MsgBoxStyle.Information)
-            End If
-            ClearAllForNext()
-        End If
+        Next
     End Sub
-    'MakeTransparent_GridBitmap
+    'MakeTransparent_GridBitmap()
     Private Sub MakeTransparent_GridBitmap()
         If SpriteSheet_Image IsNot Nothing Then
             Dim x As Integer
@@ -145,7 +176,7 @@
             Try
                 ClearPictureboxes()
 
-                SpriteSheet_Image = New Bitmap(Image.FromFile(files(0)))
+                SpriteSheet_Image = GetMemoryBitmapFromFile(files(0))
                 'SpriteSheet_Image = Image.FromFile(files(0))
 
                 TextBox_FileName.Text = Path.GetFileNameWithoutExtension(files(0))
@@ -276,6 +307,7 @@
     Private Sub ClearAllForNext()
         TextBox_ExportDirectory.Clear()
         TextBox_FileName.Clear()
+        ListBox_Bulk.Items.Clear()
         ClearPictureboxes()
         Label_EstimatedSpriteSize.Text = "Estimated Sprite Size"
     End Sub
@@ -303,4 +335,83 @@
             NumericUpDown_Vert.Enabled = True
         End If
     End Sub
+    'ListBox_Bulk_SelectedIndexChanged
+    Private Sub ListBox_Bulk_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox_Bulk.SelectedIndexChanged
+        If Not ListBox_Bulk.SelectedIndex = -1 Then
+            ClearPictureboxes()
+
+            SpriteSheet_Image = GetMemoryBitmapFromFile(ListBox_Bulk.SelectedItem.ToString)
+            'SpriteSheet_Image = Image.FromFile(files(0))
+
+            'TextBox_FileName.Text = Path.GetFileNameWithoutExtension(ListBox_Bulk.SelectedItem.ToString)
+            'TextBox_ExportDirectory.Text = Path.GetDirectoryName(ListBox_Bulk.SelectedItem.ToString)
+            EstimatedSpriteWidth = CInt(SpriteSheet_Image.Width / NumericUpDown_Hori.Value) - CInt(NumericUpDown_Offset_Hori.Value)
+            EstimatedSpriteHeight = CInt(SpriteSheet_Image.Height / NumericUpDown_Vert.Value) - CInt(NumericUpDown_Offset_Vert.Value)
+            Label_EstimatedSpriteSize.Text = "Estimated Sprite Size (" & EstimatedSpriteWidth & "x" & EstimatedSpriteHeight & ")"
+
+            'NumericUpDown_Offset_Hori.Maximum = SpriteSheet_Image.Width
+            'NumericUpDown_Offset_Vert.Maximum = SpriteSheet_Image.Height
+
+            MakeTransparent_GridBitmap()
+        End If
+    End Sub
+    'ListBox_Bulk - DragDrop
+    Private Sub ListBox_Bulk_DragDrop(sender As Object, e As DragEventArgs) Handles ListBox_Bulk.DragDrop
+        Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+        If files.Length <> 0 Then
+            Try
+                For Each item In files
+                    If SupportedIamgeFormats.Contains(Path.GetExtension(item).ToLower) Then
+                        ListBox_Bulk.Items.Add(item)
+                    End If
+                Next
+
+                If Not ListBox_Bulk.Items.Count = 0 Then
+                    'Select first item
+                    ListBox_Bulk.SelectedIndex = 0
+                    '
+                    Button_SelectExportDirectory.Enabled = False
+                    TextBox_FileName.Enabled = False
+                    TextBox_ExportDirectory.Enabled = False
+                End If
+            Catch ex As Exception
+                MsgBox("Problem opening file.", MsgBoxStyle.Critical)
+            End Try
+        End If
+    End Sub
+    'ListBox_Bulk - DragEnter
+    Private Sub ListBox_Bulk_DragEnter(sender As Object, e As DragEventArgs) Handles ListBox_Bulk.DragEnter
+        Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+        If e.Data.GetDataPresent(DataFormats.FileDrop) And SupportedIamgeFormats.Contains(Path.GetExtension(files(0)).ToLower) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+    'ListBox_Bulk - DoubleClick
+    Private Sub ListBox_Bulk_DoubleClick(sender As Object, e As EventArgs) Handles ListBox_Bulk.DoubleClick
+        If Not ListBox_Bulk.SelectedIndex = -1 Then
+            ListBox_Bulk.Items.RemoveAt(ListBox_Bulk.SelectedIndex)
+            ClearPictureboxes()
+            '
+            If ListBox_Bulk.Items.Count = 0 Then
+                Button_SelectExportDirectory.Enabled = True
+                TextBox_FileName.Enabled = True
+                TextBox_ExportDirectory.Enabled = True
+            End If
+        End If
+    End Sub
+    'GetMemoryBitmapFromFile(path)
+    Public Shared Function GetMemoryBitmapFromFile(path As String) As Bitmap
+        Dim bm As Bitmap
+        Using img As Image = Image.FromFile(path)
+            bm = New Bitmap(img)
+        End Using
+        Return bm
+        '//Other Method
+        'Dim streamReader As StreamReader = New StreamReader(path)
+        'Dim tmpBitmap As Bitmap = CType(Bitmap.FromStream(streamReader.BaseStream), Bitmap)
+        'streamReader.Close()
+        'Return tmpBitmap
+    End Function
 End Class

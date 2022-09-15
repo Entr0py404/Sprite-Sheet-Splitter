@@ -34,7 +34,6 @@ Partial Class Form1
         Me.Label_ExportDirectory = New System.Windows.Forms.Label()
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
         Me.Panel_Image = New System.Windows.Forms.Panel()
-        Me.PixelBoxGrid = New Sprite_Sheet_Splitter.PixelBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ColorDialog1 = New System.Windows.Forms.ColorDialog()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
@@ -43,6 +42,8 @@ Partial Class Form1
         Me.ToolStripLabel_SizeMode = New System.Windows.Forms.ToolStripLabel()
         Me.ToolStripComboBox_SizeMode = New System.Windows.Forms.ToolStripComboBox()
         Me.ToolStripLabel_ZoomLvl = New System.Windows.Forms.ToolStripLabel()
+        Me.ListBox_Bulk = New System.Windows.Forms.ListBox()
+        Me.Label5 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.NumericUpDown_Offset_Vert = New System.Windows.Forms.NumericUpDown()
         Me.NumericUpDown_Offset_Hori = New System.Windows.Forms.NumericUpDown()
@@ -50,6 +51,7 @@ Partial Class Form1
         Me.Button_SelectExportDirectory = New System.Windows.Forms.Button()
         Me.Button_SplitSpriteSheet = New System.Windows.Forms.Button()
         Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
+        Me.RectangleShape7 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
         Me.RectangleShape6 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
         Me.RectangleShape1 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
         Me.RectangleShape2 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
@@ -61,10 +63,10 @@ Partial Class Form1
         Me.ClearToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GridColorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CompletionNotificationToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PixelBoxGrid = New Sprite_Sheet_Splitter.PixelBox()
         CType(Me.NumericUpDown_Hori, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_Vert, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel_Image.SuspendLayout()
-        CType(Me.PixelBoxGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -74,6 +76,7 @@ Partial Class Form1
         CType(Me.NumericUpDown_Offset_Vert, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_Offset_Hori, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MenuStrip1.SuspendLayout()
+        CType(Me.PixelBoxGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'NumericUpDown_Hori
@@ -179,20 +182,8 @@ Partial Class Form1
         Me.Panel_Image.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Panel_Image.Location = New System.Drawing.Point(0, 32)
         Me.Panel_Image.Name = "Panel_Image"
-        Me.Panel_Image.Size = New System.Drawing.Size(418, 318)
+        Me.Panel_Image.Size = New System.Drawing.Size(552, 386)
         Me.Panel_Image.TabIndex = 82
-        '
-        'PixelBoxGrid
-        '
-        Me.PixelBoxGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.PixelBoxGrid.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality
-        Me.PixelBoxGrid.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PixelBoxGrid.Location = New System.Drawing.Point(0, 0)
-        Me.PixelBoxGrid.Name = "PixelBoxGrid"
-        Me.PixelBoxGrid.Size = New System.Drawing.Size(418, 318)
-        Me.PixelBoxGrid.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PixelBoxGrid.TabIndex = 85
-        Me.PixelBoxGrid.TabStop = False
         '
         'Label1
         '
@@ -200,7 +191,7 @@ Partial Class Form1
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(0, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(418, 32)
+        Me.Label1.Size = New System.Drawing.Size(552, 32)
         Me.Label1.TabIndex = 83
         Me.Label1.Text = "Drag && Drop Sprite Sheet Here"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -225,6 +216,8 @@ Partial Class Form1
         '
         'SplitContainer1.Panel2
         '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.ListBox_Bulk)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.Label5)
         Me.SplitContainer1.Panel2.Controls.Add(Me.Label2)
         Me.SplitContainer1.Panel2.Controls.Add(Me.NumericUpDown_Offset_Vert)
         Me.SplitContainer1.Panel2.Controls.Add(Me.NumericUpDown_Offset_Hori)
@@ -241,8 +234,8 @@ Partial Class Form1
         Me.SplitContainer1.Panel2.Controls.Add(Me.Label_FileName)
         Me.SplitContainer1.Panel2.Controls.Add(Me.Label_ExportDirectory)
         Me.SplitContainer1.Panel2.Controls.Add(Me.ShapeContainer1)
-        Me.SplitContainer1.Size = New System.Drawing.Size(788, 375)
-        Me.SplitContainer1.SplitterDistance = 418
+        Me.SplitContainer1.Size = New System.Drawing.Size(912, 443)
+        Me.SplitContainer1.SplitterDistance = 552
         Me.SplitContainer1.TabIndex = 84
         Me.SplitContainer1.TabStop = False
         '
@@ -254,7 +247,7 @@ Partial Class Form1
         Me.Panel2.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel2.Location = New System.Drawing.Point(0, 0)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(418, 32)
+        Me.Panel2.Size = New System.Drawing.Size(552, 32)
         Me.Panel2.TabIndex = 87
         '
         'ToolStrip1
@@ -264,9 +257,9 @@ Partial Class Form1
         Me.ToolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.ToolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel_SizeMode, Me.ToolStripComboBox_SizeMode, Me.ToolStripLabel_ZoomLvl})
-        Me.ToolStrip1.Location = New System.Drawing.Point(0, 350)
+        Me.ToolStrip1.Location = New System.Drawing.Point(0, 418)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(418, 25)
+        Me.ToolStrip1.Size = New System.Drawing.Size(552, 25)
         Me.ToolStrip1.TabIndex = 89
         '
         'ToolStripLabel_SizeMode
@@ -295,6 +288,29 @@ Partial Class Form1
         Me.ToolStripLabel_ZoomLvl.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ToolStripLabel_ZoomLvl.Size = New System.Drawing.Size(69, 22)
         Me.ToolStripLabel_ZoomLvl.Text = "Zoom: 100%"
+        '
+        'ListBox_Bulk
+        '
+        Me.ListBox_Bulk.AllowDrop = True
+        Me.ListBox_Bulk.BackColor = System.Drawing.Color.FromArgb(CType(CType(46, Byte), Integer), CType(CType(49, Byte), Integer), CType(CType(54, Byte), Integer))
+        Me.ListBox_Bulk.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.ListBox_Bulk.ForeColor = System.Drawing.Color.WhiteSmoke
+        Me.ListBox_Bulk.FormattingEnabled = True
+        Me.ListBox_Bulk.HorizontalScrollbar = True
+        Me.ListBox_Bulk.Location = New System.Drawing.Point(24, 280)
+        Me.ListBox_Bulk.Name = "ListBox_Bulk"
+        Me.ListBox_Bulk.Size = New System.Drawing.Size(312, 104)
+        Me.ListBox_Bulk.TabIndex = 26
+        '
+        'Label5
+        '
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(16, 248)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(88, 21)
+        Me.Label5.TabIndex = 25
+        Me.Label5.Text = "Bulk mode List:"
+        Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Label2
         '
@@ -364,7 +380,7 @@ Partial Class Form1
         Me.Button_SplitSpriteSheet.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Button_SplitSpriteSheet.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button_SplitSpriteSheet.ForeColor = System.Drawing.Color.WhiteSmoke
-        Me.Button_SplitSpriteSheet.Location = New System.Drawing.Point(120, 248)
+        Me.Button_SplitSpriteSheet.Location = New System.Drawing.Point(200, 400)
         Me.Button_SplitSpriteSheet.Name = "Button_SplitSpriteSheet"
         Me.Button_SplitSpriteSheet.Size = New System.Drawing.Size(144, 32)
         Me.Button_SplitSpriteSheet.TabIndex = 6
@@ -376,10 +392,23 @@ Partial Class Form1
         Me.ShapeContainer1.Location = New System.Drawing.Point(0, 0)
         Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
         Me.ShapeContainer1.Name = "ShapeContainer1"
-        Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.RectangleShape6, Me.RectangleShape1, Me.RectangleShape2, Me.RectangleShape3, Me.RectangleShape4, Me.RectangleShape5})
-        Me.ShapeContainer1.Size = New System.Drawing.Size(366, 375)
+        Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.RectangleShape7, Me.RectangleShape6, Me.RectangleShape1, Me.RectangleShape2, Me.RectangleShape3, Me.RectangleShape4, Me.RectangleShape5})
+        Me.ShapeContainer1.Size = New System.Drawing.Size(356, 443)
         Me.ShapeContainer1.TabIndex = 20
         Me.ShapeContainer1.TabStop = False
+        '
+        'RectangleShape7
+        '
+        Me.RectangleShape7.BackColor = System.Drawing.Color.FromArgb(CType(CType(46, Byte), Integer), CType(CType(49, Byte), Integer), CType(CType(54, Byte), Integer))
+        Me.RectangleShape7.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque
+        Me.RectangleShape7.BorderColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(30, Byte), Integer), CType(CType(34, Byte), Integer))
+        Me.RectangleShape7.CornerRadius = 3
+        Me.RectangleShape7.FillColor = System.Drawing.Color.WhiteSmoke
+        Me.RectangleShape7.FillGradientColor = System.Drawing.Color.WhiteSmoke
+        Me.RectangleShape7.Location = New System.Drawing.Point(16, 272)
+        Me.RectangleShape7.Name = "RectangleShape7"
+        Me.RectangleShape7.SelectionColor = System.Drawing.Color.Transparent
+        Me.RectangleShape7.Size = New System.Drawing.Size(328, 120)
         '
         'RectangleShape6
         '
@@ -444,7 +473,7 @@ Partial Class Form1
         Me.RectangleShape4.Location = New System.Drawing.Point(120, 168)
         Me.RectangleShape4.Name = "RectangleShape4"
         Me.RectangleShape4.SelectionColor = System.Drawing.Color.Transparent
-        Me.RectangleShape4.Size = New System.Drawing.Size(136, 24)
+        Me.RectangleShape4.Size = New System.Drawing.Size(144, 24)
         '
         'RectangleShape5
         '
@@ -457,7 +486,7 @@ Partial Class Form1
         Me.RectangleShape5.Location = New System.Drawing.Point(120, 208)
         Me.RectangleShape5.Name = "RectangleShape5"
         Me.RectangleShape5.SelectionColor = System.Drawing.Color.Transparent
-        Me.RectangleShape5.Size = New System.Drawing.Size(136, 24)
+        Me.RectangleShape5.Size = New System.Drawing.Size(144, 24)
         '
         'MenuStrip1
         '
@@ -467,7 +496,7 @@ Partial Class Form1
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(788, 32)
+        Me.MenuStrip1.Size = New System.Drawing.Size(912, 32)
         Me.MenuStrip1.TabIndex = 85
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -510,24 +539,35 @@ Partial Class Form1
         Me.CompletionNotificationToolStripMenuItem.Size = New System.Drawing.Size(254, 30)
         Me.CompletionNotificationToolStripMenuItem.Text = "Completion Notification"
         '
+        'PixelBoxGrid
+        '
+        Me.PixelBoxGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.PixelBoxGrid.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality
+        Me.PixelBoxGrid.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.PixelBoxGrid.Location = New System.Drawing.Point(0, 0)
+        Me.PixelBoxGrid.Name = "PixelBoxGrid"
+        Me.PixelBoxGrid.Size = New System.Drawing.Size(552, 386)
+        Me.PixelBoxGrid.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PixelBoxGrid.TabIndex = 85
+        Me.PixelBoxGrid.TabStop = False
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(54, Byte), Integer), CType(CType(57, Byte), Integer), CType(CType(62, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(788, 407)
+        Me.ClientSize = New System.Drawing.Size(912, 475)
         Me.Controls.Add(Me.SplitContainer1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.ForeColor = System.Drawing.Color.WhiteSmoke
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MinimumSize = New System.Drawing.Size(648, 345)
+        Me.MinimumSize = New System.Drawing.Size(648, 514)
         Me.Name = "Form1"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Sprite Sheet Splitter"
         CType(Me.NumericUpDown_Hori, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown_Vert, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel_Image.ResumeLayout(False)
-        CType(Me.PixelBoxGrid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel1.PerformLayout()
         Me.SplitContainer1.Panel2.ResumeLayout(False)
@@ -541,6 +581,7 @@ Partial Class Form1
         CType(Me.NumericUpDown_Offset_Hori, System.ComponentModel.ISupportInitialize).EndInit()
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
+        CType(Me.PixelBoxGrid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -584,4 +625,7 @@ Partial Class Form1
     Friend WithEvents Label2 As Label
     Friend WithEvents RectangleShape6 As PowerPacks.RectangleShape
     Friend WithEvents RectangleShape1 As PowerPacks.RectangleShape
+    Friend WithEvents ListBox_Bulk As ListBox
+    Friend WithEvents Label5 As Label
+    Friend WithEvents RectangleShape7 As PowerPacks.RectangleShape
 End Class
