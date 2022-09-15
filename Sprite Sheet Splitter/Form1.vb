@@ -70,7 +70,7 @@
     Private Sub Button_SplitSpriteStrip_Click(sender As Object, e As EventArgs) Handles Button_SplitSpriteSheet.Click
         If Not ListBox_Bulk.Items.Count = 0 Then
             For Each item As String In ListBox_Bulk.Items
-                SpriteSheet_Image = GetMemoryBitmapFromFile(item)
+                SpriteSheet_Image = GetBitmapFromFile(item)
                 SplitSpriteStrip(Path.GetDirectoryName(item), Path.GetFileNameWithoutExtension(item))
             Next
             If CompletionNotificationToolStripMenuItem.Checked Then
@@ -176,7 +176,7 @@
             Try
                 ClearPictureboxes()
 
-                SpriteSheet_Image = GetMemoryBitmapFromFile(files(0))
+                SpriteSheet_Image = GetBitmapFromFile(files(0))
                 'SpriteSheet_Image = Image.FromFile(files(0))
 
                 TextBox_FileName.Text = Path.GetFileNameWithoutExtension(files(0))
@@ -340,7 +340,7 @@
         If Not ListBox_Bulk.SelectedIndex = -1 Then
             ClearPictureboxes()
 
-            SpriteSheet_Image = GetMemoryBitmapFromFile(ListBox_Bulk.SelectedItem.ToString)
+            SpriteSheet_Image = GetBitmapFromFile(ListBox_Bulk.SelectedItem.ToString)
             'SpriteSheet_Image = Image.FromFile(files(0))
 
             'TextBox_FileName.Text = Path.GetFileNameWithoutExtension(ListBox_Bulk.SelectedItem.ToString)
@@ -402,7 +402,7 @@
         End If
     End Sub
     'GetMemoryBitmapFromFile(path)
-    Public Shared Function GetMemoryBitmapFromFile(path As String) As Bitmap
+    Public Shared Function GetBitmapFromFile(path As String) As Bitmap
         Dim bm As Bitmap
         Using img As Image = Image.FromFile(path)
             bm = New Bitmap(img)
