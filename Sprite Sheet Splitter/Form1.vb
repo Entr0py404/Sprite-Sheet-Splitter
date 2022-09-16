@@ -6,7 +6,7 @@
     ReadOnly SupportedIamgeFormats() As String = {".png", ".bmp", ".jpeg", ".jpg", ".tiff", ".tif"}
     ReadOnly NinePatchDirections() As String = {"northwest", "north", "northeast", "west", "center", "east", "southwest", "south", "southeast"}
     Dim EventsOn As Boolean = False
-    Dim SpriteSheet_Image As Bitmap
+    Dim SpriteSheet_Image As Image
     'Dim SpriteSheet_Image As Image
 
     'Form1 - Load
@@ -70,7 +70,7 @@
     Private Sub Button_SplitSpriteStrip_Click(sender As Object, e As EventArgs) Handles Button_SplitSpriteSheet.Click
         If Not ListBox_Bulk.Items.Count = 0 Then
             For Each item As String In ListBox_Bulk.Items
-                SpriteSheet_Image = GetBitmapFromFile(item)
+                SpriteSheet_Image = SafeImageFromFile(item)
                 SplitSpriteStrip(Path.GetDirectoryName(item), Path.GetFileNameWithoutExtension(item))
             Next
             If CompletionNotificationToolStripMenuItem.Checked Then
@@ -176,7 +176,7 @@
             Try
                 ClearPictureboxes()
 
-                SpriteSheet_Image = GetBitmapFromFile(files(0))
+                SpriteSheet_Image = SafeImageFromFile(files(0))
                 'SpriteSheet_Image = Image.FromFile(files(0))
 
                 TextBox_FileName.Text = Path.GetFileNameWithoutExtension(files(0))
@@ -340,7 +340,7 @@
         If Not ListBox_Bulk.SelectedIndex = -1 Then
             ClearPictureboxes()
 
-            SpriteSheet_Image = GetBitmapFromFile(ListBox_Bulk.SelectedItem.ToString)
+            SpriteSheet_Image = SafeImageFromFile(ListBox_Bulk.SelectedItem.ToString)
             'SpriteSheet_Image = Image.FromFile(files(0))
 
             'TextBox_FileName.Text = Path.GetFileNameWithoutExtension(ListBox_Bulk.SelectedItem.ToString)
@@ -401,17 +401,12 @@
             End If
         End If
     End Sub
-    'GetMemoryBitmapFromFile(path)
-    Public Shared Function GetBitmapFromFile(path As String) As Bitmap
-        Dim bm As Bitmap
-        Using img As Image = Image.FromFile(path)
-            bm = New Bitmap(img)
+    'SafeImageFromFile()
+    Public Shared Function SafeImageFromFile(path As String) As Image
+        Dim bytes = File.ReadAllBytes(path)
+        Using ms As New MemoryStream(bytes)
+            Dim img = Image.FromStream(ms)
+            Return img
         End Using
-        Return bm
-        '//Other Method
-        'Dim streamReader As StreamReader = New StreamReader(path)
-        'Dim tmpBitmap As Bitmap = CType(Bitmap.FromStream(streamReader.BaseStream), Bitmap)
-        'streamReader.Close()
-        'Return tmpBitmap
     End Function
 End Class
