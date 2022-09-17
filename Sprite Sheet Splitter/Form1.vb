@@ -7,7 +7,6 @@
     ReadOnly NinePatchDirections() As String = {"northwest", "north", "northeast", "west", "center", "east", "southwest", "south", "southeast"}
     Dim EventsOn As Boolean = False
     Dim SpriteSheet_Image As Image
-    'Dim SpriteSheet_Image As Image
 
     'Form1 - Load
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -177,7 +176,6 @@
                 ClearPictureboxes()
 
                 SpriteSheet_Image = SafeImageFromFile(files(0))
-                'SpriteSheet_Image = Image.FromFile(files(0))
 
                 TextBox_FileName.Text = Path.GetFileNameWithoutExtension(files(0))
                 TextBox_ExportDirectory.Text = Path.GetDirectoryName(files(0))
@@ -341,16 +339,10 @@
             ClearPictureboxes()
 
             SpriteSheet_Image = SafeImageFromFile(ListBox_Bulk.SelectedItem.ToString)
-            'SpriteSheet_Image = Image.FromFile(files(0))
 
-            'TextBox_FileName.Text = Path.GetFileNameWithoutExtension(ListBox_Bulk.SelectedItem.ToString)
-            'TextBox_ExportDirectory.Text = Path.GetDirectoryName(ListBox_Bulk.SelectedItem.ToString)
             EstimatedSpriteWidth = CInt(SpriteSheet_Image.Width / NumericUpDown_Hori.Value) - CInt(NumericUpDown_Offset_Hori.Value)
             EstimatedSpriteHeight = CInt(SpriteSheet_Image.Height / NumericUpDown_Vert.Value) - CInt(NumericUpDown_Offset_Vert.Value)
             Label_EstimatedSpriteSize.Text = "Estimated Sprite Size (" & EstimatedSpriteWidth & "x" & EstimatedSpriteHeight & ")"
-
-            'NumericUpDown_Offset_Hori.Maximum = SpriteSheet_Image.Width
-            'NumericUpDown_Offset_Vert.Maximum = SpriteSheet_Image.Height
 
             MakeTransparent_GridBitmap()
         End If
