@@ -1,5 +1,4 @@
 ﻿Imports System.ComponentModel
-Imports System.Drawing.Drawing2D
 Public Class PixelBox
     Inherits PictureBox
 
