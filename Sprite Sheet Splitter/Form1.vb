@@ -1,7 +1,4 @@
-﻿
-Imports System.Net.Security
-
-Public Class Form1
+﻿Public Class Form1
     Dim EstimatedSpriteWidth As Integer = 0
     Dim EstimatedSpriteHeight As Integer = 0
     Public GridColor As New Pen(Color.FromArgb(0, 255, 128), 2) 'Color of the lines
@@ -525,7 +522,7 @@ Public Class Form1
                 PixelBoxGrid.Cursor = New Cursor(LoadCursorFromFile(Application.StartupPath & "\Eyedropper.cur"))
             End If
         Else
-                ColorToTransparent = False
+            ColorToTransparent = False
             PixelBox_Checkbox_ColorToTransparent.Image = My.Resources.Checkbox_Grey_Unchecked
             Button_EyeDropper.Visible = False
             MakeTransparent_GridBitmap()
