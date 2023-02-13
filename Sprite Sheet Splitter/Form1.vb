@@ -1,4 +1,7 @@
-﻿Public Class Form1
+﻿
+Imports System.Net.Security
+
+Public Class Form1
     Dim EstimatedSpriteWidth As Integer = 0
     Dim EstimatedSpriteHeight As Integer = 0
     Public GridColor As New Pen(Color.FromArgb(0, 255, 128), 2) 'Color of the lines
@@ -7,7 +10,13 @@
     ReadOnly NinePatchDirections() As String = {"northwest", "north", "northeast", "west", "center", "east", "southwest", "south", "southeast"}
     Dim EventsOn As Boolean = False
     Dim SpriteSheet_Image As Image
-
+    Dim controlImage As Bitmap
+    Dim EyeDropperMode As Boolean = False
+    Dim NinePatchMode As Boolean = False
+    Dim BulkMode As Boolean = False
+    Dim ColorToTransparent As Boolean = False
+    Dim RemoveBlanksFromExport As Boolean = False
+    Private Declare Unicode Function LoadCursorFromFile Lib "user32.dll" Alias "LoadCursorFromFileW" (ByVal filename As String) As IntPtr
     'Form1 - Load
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Load setttings
@@ -18,6 +27,11 @@
         EventsOn = True
         MenuStrip1.Renderer = New ToolStripProfessionalRenderer(New ColorTable())
         ToolStrip1.Renderer = New ToolStripProfessionalRenderer(New ColorTable())
+        ContextMenuStrip_ListBox_Bulk.Renderer = New ToolStripProfessionalRenderer(New ColorTable())
+
+        If Not File.Exists(Application.StartupPath & "\Eyedropper.cur") Then
+            File.WriteAllBytes(Application.StartupPath & "\Eyedropper.cur", My.Resources.Eyedropper)
+        End If
     End Sub
     'NumericUpDownH - ValueChanged
     Private Sub NumericUpDownH_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown_Hori.ValueChanged
@@ -67,7 +81,7 @@
     End Sub
     'Button_SplitSheet - Click
     Private Sub Button_SplitSpriteStrip_Click(sender As Object, e As EventArgs) Handles Button_SplitSpriteSheet.Click
-        If Not ListBox_Bulk.Items.Count = 0 Then
+        If BulkMode = True And Not ListBox_Bulk.Items.Count = 0 Then
             For Each item As String In ListBox_Bulk.Items
                 SpriteSheet_Image = SafeImageFromFile(item)
                 SplitSpriteStrip(Path.GetDirectoryName(item), Path.GetFileNameWithoutExtension(item))
@@ -89,7 +103,7 @@
     'SplitSpriteStrip()
     Private Sub SplitSpriteStrip(imgPath As String, imgNameNoExt As String)
 
-        If Not ListBox_Bulk.Items.Count = 0 Then
+        If BulkMode = True And Not ListBox_Bulk.Items.Count = 0 Then
             SpriteSheet_Image = New Bitmap(Image.FromFile(imgPath & "\" & imgNameNoExt & ".png"))
             EstimatedSpriteWidth = CInt(SpriteSheet_Image.Width / NumericUpDown_Hori.Value) - CInt(NumericUpDown_Offset_Hori.Value)
             EstimatedSpriteHeight = CInt(SpriteSheet_Image.Height / NumericUpDown_Vert.Value) - CInt(NumericUpDown_Offset_Vert.Value)
@@ -100,7 +114,7 @@
         For indexH As Integer = 0 To CInt(NumericUpDown_Vert.Value - 1)
             Dim Offset_Hori As Integer = CInt(NumericUpDown_Offset_Hori.Value)
             For indexW As Integer = 0 To CInt(NumericUpDown_Hori.Value - 1)
-                MainLoopIndex += 1
+
                 Dim CropRect As Rectangle
 
                 Dim CropRect_X As Integer = 0
@@ -115,6 +129,7 @@
 
                 CropRect = New Rectangle(CropRect_X, CropRect_Y, EstimatedSpriteWidth, EstimatedSpriteHeight)
                 Dim CropImage = New Bitmap(CropRect.Width, CropRect.Height)
+
                 Using grp = Graphics.FromImage(CropImage)
                     grp.SmoothingMode = SmoothingMode.None
                     grp.InterpolationMode = InterpolationMode.HighQualityBicubic
@@ -123,21 +138,69 @@
                     grp.Dispose()
                 End Using
 
-                If ListBox_Bulk.Items.Count = 0 Then
-                    If CheckBox_NinePatchMode.Checked = False Then
-                        CropImage.Save(TextBox_ExportDirectory.Text & "\" & TextBox_FileName.Text & "_" & MainLoopIndex & ".png", ImageFormat.Png)
-                    Else
-                        CropImage.Save(TextBox_ExportDirectory.Text & "\9patch_" & TextBox_FileName.Text & "_" & NinePatchDirections(MainLoopIndex - 1) & ".png", ImageFormat.Png)
-                    End If
-                Else 'Bulk Mode
-                    If CheckBox_NinePatchMode.Checked = False Then
-                        CropImage.Save(imgPath & "\" & imgNameNoExt & "_" & MainLoopIndex & ".png", ImageFormat.Png)
-                    Else
-                        CropImage.Save(imgPath & "\9patch_" & imgNameNoExt & "_" & NinePatchDirections(MainLoopIndex - 1) & ".png", ImageFormat.Png)
-                    End If
+                If ColorToTransparent = True Then
+                    CropImage.MakeTransparent(Button_EyeDropper.BackColor)
                 End If
 
-                CropImage.Dispose()
+                Dim ImageHasColor As Boolean = False
+                If RemoveBlanksFromExport = True Then
+                    Dim TempColor As Color
+                    For y As Integer = 0 To CropImage.Height - 1
+                        If ImageHasColor = False Then
+                            For x As Integer = 0 To CropImage.Width - 1
+                                TempColor = CropImage.GetPixel(x, y)
+                                If ColorToTransparent = True Then
+                                    If Not TempColor = Button_EyeDropper.BackColor Or Not TempColor = Color.FromArgb(0, 0, 0, 0) Then
+                                        ImageHasColor = True
+                                        Exit For
+                                    End If
+                                Else
+                                    If Not TempColor = Color.FromArgb(0, 0, 0, 0) Then
+                                        ImageHasColor = True
+                                        Exit For
+                                    End If
+                                End If
+                            Next
+                        End If
+                    Next
+
+                    If ImageHasColor = True Then
+                        MainLoopIndex += 1
+
+                        If BulkMode = False And ListBox_Bulk.Items.Count = 0 Then
+                            If NinePatchMode = False Then
+                                CropImage.Save(TextBox_ExportDirectory.Text & "\" & TextBox_FileName.Text & "_" & MainLoopIndex & ".png", ImageFormat.Png)
+                            Else
+                                CropImage.Save(TextBox_ExportDirectory.Text & "\9patch_" & TextBox_FileName.Text & "_" & NinePatchDirections(MainLoopIndex - 1) & ".png", ImageFormat.Png)
+                            End If
+                        Else 'Bulk Mode
+                            If NinePatchMode = False Then
+                                CropImage.Save(imgPath & "\" & imgNameNoExt & "_" & MainLoopIndex & ".png", ImageFormat.Png)
+                            Else
+                                CropImage.Save(imgPath & "\9patch_" & imgNameNoExt & "_" & NinePatchDirections(MainLoopIndex - 1) & ".png", ImageFormat.Png)
+                            End If
+                        End If
+                        CropImage.Dispose()
+                    End If
+
+                Else
+                    MainLoopIndex += 1
+
+                    If BulkMode = False And ListBox_Bulk.Items.Count = 0 Then
+                        If NinePatchMode = False Then
+                            CropImage.Save(TextBox_ExportDirectory.Text & "\" & TextBox_FileName.Text & "_" & MainLoopIndex & ".png", ImageFormat.Png)
+                        Else
+                            CropImage.Save(TextBox_ExportDirectory.Text & "\9patch_" & TextBox_FileName.Text & "_" & NinePatchDirections(MainLoopIndex - 1) & ".png", ImageFormat.Png)
+                        End If
+                    Else 'Bulk Mode
+                        If NinePatchMode = False Then
+                            CropImage.Save(imgPath & "\" & imgNameNoExt & "_" & MainLoopIndex & ".png", ImageFormat.Png)
+                        Else
+                            CropImage.Save(imgPath & "\9patch_" & imgNameNoExt & "_" & NinePatchDirections(MainLoopIndex - 1) & ".png", ImageFormat.Png)
+                        End If
+                    End If
+                    CropImage.Dispose()
+                End If
 
             Next
         Next
@@ -165,7 +228,13 @@
                 Next
                 grp.Dispose()
             End Using
+
+            If ColorToTransparent = True Then
+                GridBitmap.MakeTransparent(Button_EyeDropper.BackColor)
+            End If
+
             PixelBoxGrid.Image = GridBitmap
+
         End If
     End Sub
     'Panel_Image - DragDrop
@@ -308,6 +377,7 @@
         ListBox_Bulk.Items.Clear()
         ClearPictureboxes()
         Label_EstimatedSpriteSize.Text = "Estimated Sprite Size"
+        controlImage = Nothing
     End Sub
     'ToolStripComboBox_SizeMode - DropDownClosed
     Private Sub ToolStripComboBox_SizeMode_DropDownClosed(sender As Object, e As EventArgs) Handles ToolStripComboBox_SizeMode.DropDownClosed
@@ -320,18 +390,6 @@
     'ToolStripMenuItem1 - DropDownOpened
     Private Sub ToolStripMenuItem1_DropDownOpened(sender As Object, e As EventArgs) Handles ToolStripMenuItem1.DropDownOpened
         ToolStripMenuItem1.ForeColor = Color.Black
-    End Sub
-    'CheckBox_NinePatchMode - CheckedChanged
-    Private Sub CheckBox_NinePatchMode_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox_NinePatchMode.CheckedChanged
-        If CheckBox_NinePatchMode.Checked = True Then
-            NumericUpDown_Hori.Value = 3
-            NumericUpDown_Vert.Value = 3
-            NumericUpDown_Hori.Enabled = False
-            NumericUpDown_Vert.Enabled = False
-        Else
-            NumericUpDown_Hori.Enabled = True
-            NumericUpDown_Vert.Enabled = True
-        End If
     End Sub
     'ListBox_Bulk_SelectedIndexChanged
     Private Sub ListBox_Bulk_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox_Bulk.SelectedIndexChanged
@@ -354,17 +412,14 @@
             Try
                 For Each item In files
                     If SupportedIamgeFormats.Contains(Path.GetExtension(item).ToLower) Then
-                        ListBox_Bulk.Items.Add(item)
+                        If Not ListBox_Bulk.Items.Contains(item) Then
+                            ListBox_Bulk.Items.Add(item)
+                        End If
                     End If
                 Next
 
                 If Not ListBox_Bulk.Items.Count = 0 Then
-                    'Select first item
-                    ListBox_Bulk.SelectedIndex = 0
-                    '
-                    Button_SelectExportDirectory.Enabled = False
-                    TextBox_FileName.Enabled = False
-                    TextBox_ExportDirectory.Enabled = False
+                    ListBox_Bulk.SelectedIndex = 0 'Select first item
                 End If
             Catch ex As Exception
                 MsgBox("Problem opening file.", MsgBoxStyle.Critical)
@@ -385,12 +440,6 @@
         If Not ListBox_Bulk.SelectedIndex = -1 Then
             ListBox_Bulk.Items.RemoveAt(ListBox_Bulk.SelectedIndex)
             ClearPictureboxes()
-            '
-            If ListBox_Bulk.Items.Count = 0 Then
-                Button_SelectExportDirectory.Enabled = True
-                TextBox_FileName.Enabled = True
-                TextBox_ExportDirectory.Enabled = True
-            End If
         End If
     End Sub
     'SafeImageFromFile()
@@ -401,4 +450,140 @@
             Return img
         End Using
     End Function
+    'TextBox_ExportDirectory - TextChanged
+    Private Sub TextBox_ExportDirectory_TextChanged(sender As Object, e As EventArgs) Handles TextBox_ExportDirectory.TextChanged
+        ToolTip1.SetToolTip(TextBox_ExportDirectory, TextBox_ExportDirectory.Text)
+    End Sub
+    'Button_EyeDropper - Click
+    Private Sub Button_EyeDropper_Click(sender As Object, e As EventArgs) Handles Button_EyeDropper.Click
+        EyeDropperMode = True
+        PictureBox_EyeDropper.Visible = True
+        If File.Exists(Application.StartupPath & "\Eyedropper.cur") Then
+            PixelBoxGrid.Cursor = New Cursor(LoadCursorFromFile(Application.StartupPath & "\Eyedropper.cur"))
+        End If
+    End Sub
+    'PixelBoxGrid - MouseMove
+    Private Sub PixelBoxGrid_MouseMove(sender As Object, e As MouseEventArgs) Handles PixelBoxGrid.MouseMove
+        If EyeDropperMode = True Then
+            PictureBox_EyeDropper.Location = New Point(e.Location.X + 6, e.Location.Y + 6)
+            PictureBox_EyeDropper.BackColor = controlImage.GetPixel(e.Location.X, e.Location.Y)
+        End If
+    End Sub
+    'PixelBoxGrid - MouseEnter
+    Private Sub PixelBoxGrid_MouseEnter(sender As Object, e As EventArgs) Handles PixelBoxGrid.MouseEnter
+        If EyeDropperMode = True Then
+            controlImage = ControlToBitmap(PixelBoxGrid, True)
+        End If
+    End Sub
+    'PixelBoxGrid - MouseClick
+    Private Sub PixelBoxGrid_MouseClick(sender As Object, e As MouseEventArgs) Handles PixelBoxGrid.MouseClick
+        If EyeDropperMode = True Then
+            If Not PictureBox_EyeDropper.BackColor = GridColor.Color Then
+                Button_EyeDropper.BackColor = PictureBox_EyeDropper.BackColor
+                EyeDropperMode = False
+                PictureBox_EyeDropper.Visible = False
+                PixelBoxGrid.Cursor = DefaultCursor
+                MakeTransparent_GridBitmap()
+                controlImage = Nothing
+            End If
+        End If
+    End Sub
+    'PixelBoxGrid - MouseLeave
+    Private Sub PixelBoxGrid_MouseLeave(sender As Object, e As EventArgs) Handles PixelBoxGrid.MouseLeave
+        EyeDropperMode = False
+        PictureBox_EyeDropper.Visible = False
+        PixelBoxGrid.Cursor = DefaultCursor
+        controlImage = Nothing
+    End Sub
+    'ControlToBitmap
+    Private Function ControlToBitmap(ctrl As Control, clientAreaOnly As Boolean) As Bitmap
+        If ctrl Is Nothing Then Return Nothing
+        Dim rect As Rectangle
+
+        If clientAreaOnly Then
+            rect = ctrl.RectangleToScreen(ctrl.ClientRectangle)
+        Else
+            rect = If(ctrl.Parent Is Nothing, ctrl.Bounds, ctrl.Parent.RectangleToScreen(ctrl.Bounds))
+        End If
+
+        Dim img As New Bitmap(rect.Width, rect.Height)
+        Using g As Graphics = Graphics.FromImage(img)
+            g.CopyFromScreen(rect.Location, Point.Empty, img.Size)
+        End Using
+        Return img
+    End Function
+    'PixelBox_Checkbox_ColorToTransparent - Click
+    Private Sub PixelBox_Checkbox_ColorToTransparent_Click(sender As Object, e As EventArgs) Handles PixelBox_Checkbox_ColorToTransparent.Click
+        If ColorToTransparent = False Then
+            ColorToTransparent = True
+            PixelBox_Checkbox_ColorToTransparent.Image = My.Resources.Checkbox_Grey_Checked
+            Button_EyeDropper.Visible = True
+
+            EyeDropperMode = True
+            PictureBox_EyeDropper.Visible = True
+            If File.Exists(Application.StartupPath & "\Eyedropper.cur") Then
+                PixelBoxGrid.Cursor = New Cursor(LoadCursorFromFile(Application.StartupPath & "\Eyedropper.cur"))
+            End If
+        Else
+                ColorToTransparent = False
+            PixelBox_Checkbox_ColorToTransparent.Image = My.Resources.Checkbox_Grey_Unchecked
+            Button_EyeDropper.Visible = False
+            MakeTransparent_GridBitmap()
+        End If
+    End Sub
+    'ToolStripMenuItem_Clear - Click
+    Private Sub ToolStripMenuItem_Clear_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem_Clear.Click
+        ListBox_Bulk.Items.Clear()
+    End Sub
+    'NinePatchToolStripMenuItem - CheckedChanged
+    Private Sub NinePatchToolStripMenuItem_CheckedChanged(sender As Object, e As EventArgs) Handles NinePatchToolStripMenuItem.CheckedChanged
+        If NinePatchMode = False Then
+            NinePatchMode = True
+            NumericUpDown_Hori.Value = 3
+            NumericUpDown_Vert.Value = 3
+            NumericUpDown_Hori.Enabled = False
+            NumericUpDown_Vert.Enabled = False
+        Else
+            NinePatchMode = False
+            NumericUpDown_Hori.Enabled = True
+            NumericUpDown_Vert.Enabled = True
+        End If
+    End Sub
+    'BulkToolStripMenuItem - CheckedChanged
+    Private Sub BulkToolStripMenuItem_CheckedChanged(sender As Object, e As EventArgs) Handles BulkToolStripMenuItem.CheckedChanged
+        If BulkMode = False Then
+            BulkMode = True
+            Panel_BulkMode.Visible = True
+            Button_SelectExportDirectory.Enabled = False
+            TextBox_FileName.Enabled = False
+            TextBox_ExportDirectory.Enabled = False
+            TextBox_FileName.Clear()
+
+            If Not ListBox_Bulk.Items.Count = 0 Then
+                ListBox_Bulk.SelectedIndex = 0
+            End If
+        Else
+            BulkMode = False
+            Panel_BulkMode.Visible = False
+            Button_SelectExportDirectory.Enabled = True
+            TextBox_FileName.Enabled = True
+            TextBox_ExportDirectory.Enabled = True
+
+            TextBox_FileName.Clear()
+            ClearPictureboxes()
+            Label_EstimatedSpriteSize.Text = "Estimated Sprite Size"
+            controlImage = Nothing
+            ListBox_Bulk.SelectedIndex = -1
+        End If
+    End Sub
+    'PixelBox_Checkbox_RemoveBlanksFromExport - Click
+    Private Sub PixelBox_Checkbox_RemoveBlanksFromExport_Click(sender As Object, e As EventArgs) Handles PixelBox_Checkbox_RemoveBlanksFromExport.Click
+        If RemoveBlanksFromExport = False Then
+            RemoveBlanksFromExport = True
+            PixelBox_Checkbox_RemoveBlanksFromExport.Image = My.Resources.Checkbox_Grey_Checked
+        Else
+            RemoveBlanksFromExport = False
+            PixelBox_Checkbox_RemoveBlanksFromExport.Image = My.Resources.Checkbox_Grey_Unchecked
+        End If
+    End Sub
 End Class
