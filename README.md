@@ -1,7 +1,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About Sprite Sheet Splitter
 
-![Screenshot 2022-05-26 132805](https://user-images.githubusercontent.com/75917656/170574647-f7e51b8e-6c25-4d6e-9e8e-66fa35e33f16.png)
+![Screenshot 2023-02-15 082143](https://user-images.githubusercontent.com/75917656/219070799-8d2cd391-dfdc-4050-b663-a239d7c34755.jpg)
 
 
 <!-- BUILT WITH  -->
