@@ -7,12 +7,12 @@
     ReadOnly NinePatchDirections() As String = {"northwest", "north", "northeast", "west", "center", "east", "southwest", "south", "southeast"}
     Dim EventsOn As Boolean = False
     Dim SpriteSheet_Image As Image
-    Dim controlImage As Bitmap
+    Dim controlBitmap As Bitmap
     Dim EyeDropperMode As Boolean = False
     Dim NinePatchMode As Boolean = False
     Dim BulkMode As Boolean = False
     Dim ColorToTransparent As Boolean = False
-    Dim RemoveBlanksFromExport As Boolean = False
+    Dim ExcludeBlanksFromExport As Boolean = False
     Private Declare Unicode Function LoadCursorFromFile Lib "user32.dll" Alias "LoadCursorFromFileW" (ByVal filename As String) As IntPtr
     'Form1 - Load
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -140,24 +140,19 @@
                 End If
 
                 Dim ImageHasColor As Boolean = False
-                If RemoveBlanksFromExport = True Then
+                If ExcludeBlanksFromExport = True Then
                     Dim TempColor As Color
                     For y As Integer = 0 To CropImage.Height - 1
                         If ImageHasColor = False Then
                             For x As Integer = 0 To CropImage.Width - 1
                                 TempColor = CropImage.GetPixel(x, y)
-                                If ColorToTransparent = True Then
-                                    If Not TempColor = Button_EyeDropper.BackColor Or Not TempColor = Color.FromArgb(0, 0, 0, 0) Then
-                                        ImageHasColor = True
-                                        Exit For
-                                    End If
-                                Else
-                                    If Not TempColor = Color.FromArgb(0, 0, 0, 0) Then
-                                        ImageHasColor = True
-                                        Exit For
-                                    End If
+                                If Not TempColor = Color.FromArgb(0, 0, 0, 0) Then
+                                    ImageHasColor = True
+                                    Exit For
                                 End If
                             Next
+                        Else
+                            Exit For
                         End If
                     Next
 
@@ -295,6 +290,20 @@
             ToolStripLabel_ZoomLvl.Visible = False
             PixelBoxGrid.Dock = DockStyle.Fill
         End If
+
+        If ToolStripComboBox_SizeMode.SelectedItem Is "Zoom" Then
+            PixelBox_Checkbox_ColorToTransparent.Enabled = False
+            Button_EyeDropper.Enabled = False
+            Button_EyeDropper.Visible = False
+            Label_SizeModeNotice.Visible = True
+        Else
+            PixelBox_Checkbox_ColorToTransparent.Enabled = True
+            Button_EyeDropper.Enabled = True
+            Label_SizeModeNotice.Visible = False
+            If ColorToTransparent = True Then
+                Button_EyeDropper.Visible = True
+            End If
+        End If
     End Sub
     'GridColorToolStripMenuItem_Click
     Private Sub GridColorToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles GridColorToolStripMenuItem.Click
@@ -374,7 +383,7 @@
         ListBox_Bulk.Items.Clear()
         ClearPictureboxes()
         Label_EstimatedSpriteSize.Text = "Estimated Sprite Size"
-        controlImage = Nothing
+        controlBitmap = Nothing
     End Sub
     'ToolStripComboBox_SizeMode - DropDownClosed
     Private Sub ToolStripComboBox_SizeMode_DropDownClosed(sender As Object, e As EventArgs) Handles ToolStripComboBox_SizeMode.DropDownClosed
@@ -463,13 +472,14 @@
     Private Sub PixelBoxGrid_MouseMove(sender As Object, e As MouseEventArgs) Handles PixelBoxGrid.MouseMove
         If EyeDropperMode = True Then
             PictureBox_EyeDropper.Location = New Point(e.Location.X + 6, e.Location.Y + 6)
-            PictureBox_EyeDropper.BackColor = controlImage.GetPixel(e.Location.X, e.Location.Y)
+            PictureBox_EyeDropper.BackColor = controlBitmap.GetPixel(e.Location.X, e.Location.Y)
         End If
     End Sub
     'PixelBoxGrid - MouseEnter
     Private Sub PixelBoxGrid_MouseEnter(sender As Object, e As EventArgs) Handles PixelBoxGrid.MouseEnter
         If EyeDropperMode = True Then
-            controlImage = ControlToBitmap(PixelBoxGrid, True)
+            controlBitmap = ControlToBitmap(PixelBoxGrid, True)
+            'controlBitmap = New Bitmap(PixelBoxGrid.Image)
         End If
     End Sub
     'PixelBoxGrid - MouseClick
@@ -481,7 +491,7 @@
                 PictureBox_EyeDropper.Visible = False
                 PixelBoxGrid.Cursor = DefaultCursor
                 MakeTransparent_GridBitmap()
-                controlImage = Nothing
+                controlBitmap = Nothing
             End If
         End If
     End Sub
@@ -490,7 +500,7 @@
         EyeDropperMode = False
         PictureBox_EyeDropper.Visible = False
         PixelBoxGrid.Cursor = DefaultCursor
-        controlImage = Nothing
+        controlBitmap = Nothing
     End Sub
     'ControlToBitmap
     Private Function ControlToBitmap(ctrl As Control, clientAreaOnly As Boolean) As Bitmap
@@ -523,6 +533,7 @@
             End If
         Else
             ColorToTransparent = False
+            PictureBox_EyeDropper.Visible = False
             PixelBox_Checkbox_ColorToTransparent.Image = My.Resources.Checkbox_Grey_Unchecked
             Button_EyeDropper.Visible = False
             MakeTransparent_GridBitmap()
@@ -569,18 +580,18 @@
             TextBox_FileName.Clear()
             ClearPictureboxes()
             Label_EstimatedSpriteSize.Text = "Estimated Sprite Size"
-            controlImage = Nothing
+            controlBitmap = Nothing
             ListBox_Bulk.SelectedIndex = -1
         End If
     End Sub
-    'PixelBox_Checkbox_RemoveBlanksFromExport - Click
-    Private Sub PixelBox_Checkbox_RemoveBlanksFromExport_Click(sender As Object, e As EventArgs) Handles PixelBox_Checkbox_RemoveBlanksFromExport.Click
-        If RemoveBlanksFromExport = False Then
-            RemoveBlanksFromExport = True
-            PixelBox_Checkbox_RemoveBlanksFromExport.Image = My.Resources.Checkbox_Grey_Checked
+    'PixelBox_Checkbox_ExcludeBlanksFromExport - Click
+    Private Sub PixelBox_Checkbox_ExcludeBlanksFromExport_Click(sender As Object, e As EventArgs) Handles PixelBox_Checkbox_ExcludeBlanksFromExport.Click
+        If ExcludeBlanksFromExport = False Then
+            ExcludeBlanksFromExport = True
+            PixelBox_Checkbox_ExcludeBlanksFromExport.Image = My.Resources.Checkbox_Grey_Checked
         Else
-            RemoveBlanksFromExport = False
-            PixelBox_Checkbox_RemoveBlanksFromExport.Image = My.Resources.Checkbox_Grey_Unchecked
+            ExcludeBlanksFromExport = False
+            PixelBox_Checkbox_ExcludeBlanksFromExport.Image = My.Resources.Checkbox_Grey_Unchecked
         End If
     End Sub
 End Class

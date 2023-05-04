@@ -35,6 +35,8 @@ Partial Class Form1
         Me.Label_ExportDirectory = New System.Windows.Forms.Label()
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
         Me.Panel_Image = New System.Windows.Forms.Panel()
+        Me.PictureBox_EyeDropper = New System.Windows.Forms.PictureBox()
+        Me.PixelBoxGrid = New Sprite_Sheet_Splitter.PixelBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ColorDialog1 = New System.Windows.Forms.ColorDialog()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
@@ -43,8 +45,12 @@ Partial Class Form1
         Me.ToolStripLabel_SizeMode = New System.Windows.Forms.ToolStripLabel()
         Me.ToolStripComboBox_SizeMode = New System.Windows.Forms.ToolStripComboBox()
         Me.ToolStripLabel_ZoomLvl = New System.Windows.Forms.ToolStripLabel()
+        Me.Label_SizeModeNotice = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
+        Me.PixelBox_Checkbox_ExcludeBlanksFromExport = New Sprite_Sheet_Splitter.PixelBox()
+        Me.Button_EyeDropper = New System.Windows.Forms.Button()
         Me.Label8 = New System.Windows.Forms.Label()
+        Me.PixelBox_Checkbox_ColorToTransparent = New Sprite_Sheet_Splitter.PixelBox()
         Me.Panel4 = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.NumericUpDown_Offset_Hori = New System.Windows.Forms.NumericUpDown()
@@ -68,12 +74,6 @@ Partial Class Form1
         Me.RectangleShape7 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
         Me.Button_SplitSpriteSheet = New System.Windows.Forms.Button()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.PictureBox_EyeDropper = New System.Windows.Forms.PictureBox()
-        Me.PixelBoxGrid = New Sprite_Sheet_Splitter.PixelBox()
-        Me.PixelBox_Checkbox_RemoveBlanksFromExport = New Sprite_Sheet_Splitter.PixelBox()
-        Me.Button_EyeDropper = New System.Windows.Forms.Button()
-        Me.PixelBox_Checkbox_ColorToTransparent = New Sprite_Sheet_Splitter.PixelBox()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClearToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GridColorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -81,15 +81,20 @@ Partial Class Form1
         Me.ModesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BulkToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.NinePatchToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         CType(Me.NumericUpDown_Hori, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_Vert, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel_Image.SuspendLayout()
+        CType(Me.PictureBox_EyeDropper, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PixelBoxGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
+        CType(Me.PixelBox_Checkbox_ExcludeBlanksFromExport, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PixelBox_Checkbox_ColorToTransparent, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel4.SuspendLayout()
         CType(Me.NumericUpDown_Offset_Hori, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_Offset_Vert, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -97,10 +102,6 @@ Partial Class Form1
         Me.Panel_BulkMode.SuspendLayout()
         Me.ContextMenuStrip_ListBox_Bulk.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
-        CType(Me.PictureBox_EyeDropper, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PixelBoxGrid, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PixelBox_Checkbox_RemoveBlanksFromExport, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PixelBox_Checkbox_ColorToTransparent, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'NumericUpDown_Hori
@@ -211,6 +212,31 @@ Partial Class Form1
         Me.Panel_Image.Size = New System.Drawing.Size(572, 447)
         Me.Panel_Image.TabIndex = 82
         '
+        'PictureBox_EyeDropper
+        '
+        Me.PictureBox_EyeDropper.BackColor = System.Drawing.Color.Transparent
+        Me.PictureBox_EyeDropper.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PictureBox_EyeDropper.Location = New System.Drawing.Point(8, 8)
+        Me.PictureBox_EyeDropper.Margin = New System.Windows.Forms.Padding(0)
+        Me.PictureBox_EyeDropper.Name = "PictureBox_EyeDropper"
+        Me.PictureBox_EyeDropper.Size = New System.Drawing.Size(32, 32)
+        Me.PictureBox_EyeDropper.TabIndex = 86
+        Me.PictureBox_EyeDropper.TabStop = False
+        Me.PictureBox_EyeDropper.Visible = False
+        '
+        'PixelBoxGrid
+        '
+        Me.PixelBoxGrid.BackColor = System.Drawing.Color.FromArgb(CType(CType(46, Byte), Integer), CType(CType(49, Byte), Integer), CType(CType(54, Byte), Integer))
+        Me.PixelBoxGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.PixelBoxGrid.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality
+        Me.PixelBoxGrid.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.PixelBoxGrid.Location = New System.Drawing.Point(0, 0)
+        Me.PixelBoxGrid.Name = "PixelBoxGrid"
+        Me.PixelBoxGrid.Size = New System.Drawing.Size(572, 447)
+        Me.PixelBoxGrid.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PixelBoxGrid.TabIndex = 85
+        Me.PixelBoxGrid.TabStop = False
+        '
         'Label1
         '
         Me.Label1.Dock = System.Windows.Forms.DockStyle.Fill
@@ -242,8 +268,9 @@ Partial Class Form1
         '
         'SplitContainer1.Panel2
         '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.Label_SizeModeNotice)
         Me.SplitContainer1.Panel2.Controls.Add(Me.Label9)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.PixelBox_Checkbox_RemoveBlanksFromExport)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.PixelBox_Checkbox_ExcludeBlanksFromExport)
         Me.SplitContainer1.Panel2.Controls.Add(Me.Button_EyeDropper)
         Me.SplitContainer1.Panel2.Controls.Add(Me.Label8)
         Me.SplitContainer1.Panel2.Controls.Add(Me.PixelBox_Checkbox_ColorToTransparent)
@@ -307,14 +334,50 @@ Partial Class Form1
         Me.ToolStripLabel_ZoomLvl.Size = New System.Drawing.Size(69, 22)
         Me.ToolStripLabel_ZoomLvl.Text = "Zoom: 100%"
         '
+        'Label_SizeModeNotice
+        '
+        Me.Label_SizeModeNotice.Location = New System.Drawing.Point(184, 16)
+        Me.Label_SizeModeNotice.Name = "Label_SizeModeNotice"
+        Me.Label_SizeModeNotice.Size = New System.Drawing.Size(168, 24)
+        Me.Label_SizeModeNotice.TabIndex = 40
+        Me.Label_SizeModeNotice.Text = "Tool not available in zoom mode"
+        Me.Label_SizeModeNotice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'Label9
         '
-        Me.Label9.Location = New System.Drawing.Point(40, 264)
+        Me.Label9.Location = New System.Drawing.Point(64, 264)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(176, 24)
+        Me.Label9.Size = New System.Drawing.Size(152, 24)
         Me.Label9.TabIndex = 39
-        Me.Label9.Text = "Remove blanks from export:"
+        Me.Label9.Text = "Exclude blanks from export:"
         Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'PixelBox_Checkbox_ExcludeBlanksFromExport
+        '
+        Me.PixelBox_Checkbox_ExcludeBlanksFromExport.Image = Global.Sprite_Sheet_Splitter.My.Resources.Resources.Checkbox_Grey_Unchecked
+        Me.PixelBox_Checkbox_ExcludeBlanksFromExport.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear
+        Me.PixelBox_Checkbox_ExcludeBlanksFromExport.Location = New System.Drawing.Point(224, 264)
+        Me.PixelBox_Checkbox_ExcludeBlanksFromExport.Name = "PixelBox_Checkbox_ExcludeBlanksFromExport"
+        Me.PixelBox_Checkbox_ExcludeBlanksFromExport.Size = New System.Drawing.Size(24, 24)
+        Me.PixelBox_Checkbox_ExcludeBlanksFromExport.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PixelBox_Checkbox_ExcludeBlanksFromExport.TabIndex = 38
+        Me.PixelBox_Checkbox_ExcludeBlanksFromExport.TabStop = False
+        '
+        'Button_EyeDropper
+        '
+        Me.Button_EyeDropper.BackColor = System.Drawing.Color.DodgerBlue
+        Me.Button_EyeDropper.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(30, Byte), Integer), CType(CType(34, Byte), Integer))
+        Me.Button_EyeDropper.FlatAppearance.BorderSize = 0
+        Me.Button_EyeDropper.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button_EyeDropper.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button_EyeDropper.ForeColor = System.Drawing.Color.WhiteSmoke
+        Me.Button_EyeDropper.Image = Global.Sprite_Sheet_Splitter.My.Resources.Resources.Oxygen_Colorchooser
+        Me.Button_EyeDropper.Location = New System.Drawing.Point(192, 8)
+        Me.Button_EyeDropper.Name = "Button_EyeDropper"
+        Me.Button_EyeDropper.Size = New System.Drawing.Size(32, 32)
+        Me.Button_EyeDropper.TabIndex = 37
+        Me.Button_EyeDropper.UseVisualStyleBackColor = False
+        Me.Button_EyeDropper.Visible = False
         '
         'Label8
         '
@@ -324,6 +387,17 @@ Partial Class Form1
         Me.Label8.TabIndex = 36
         Me.Label8.Text = "Color to transparent:"
         Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'PixelBox_Checkbox_ColorToTransparent
+        '
+        Me.PixelBox_Checkbox_ColorToTransparent.Image = Global.Sprite_Sheet_Splitter.My.Resources.Resources.Checkbox_Grey_Unchecked
+        Me.PixelBox_Checkbox_ColorToTransparent.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear
+        Me.PixelBox_Checkbox_ColorToTransparent.Location = New System.Drawing.Point(152, 16)
+        Me.PixelBox_Checkbox_ColorToTransparent.Name = "PixelBox_Checkbox_ColorToTransparent"
+        Me.PixelBox_Checkbox_ColorToTransparent.Size = New System.Drawing.Size(24, 24)
+        Me.PixelBox_Checkbox_ColorToTransparent.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PixelBox_Checkbox_ColorToTransparent.TabIndex = 35
+        Me.PixelBox_Checkbox_ColorToTransparent.TabStop = False
         '
         'Panel4
         '
@@ -599,75 +673,6 @@ Partial Class Form1
         Me.MenuStrip1.TabIndex = 85
         Me.MenuStrip1.Text = "MenuStrip1"
         '
-        'ToolTip1
-        '
-        Me.ToolTip1.BackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(30, Byte), Integer), CType(CType(34, Byte), Integer))
-        Me.ToolTip1.ForeColor = System.Drawing.Color.WhiteSmoke
-        Me.ToolTip1.UseAnimation = False
-        Me.ToolTip1.UseFading = False
-        '
-        'PictureBox_EyeDropper
-        '
-        Me.PictureBox_EyeDropper.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox_EyeDropper.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.PictureBox_EyeDropper.Location = New System.Drawing.Point(0, 0)
-        Me.PictureBox_EyeDropper.Margin = New System.Windows.Forms.Padding(0)
-        Me.PictureBox_EyeDropper.Name = "PictureBox_EyeDropper"
-        Me.PictureBox_EyeDropper.Size = New System.Drawing.Size(32, 32)
-        Me.PictureBox_EyeDropper.TabIndex = 86
-        Me.PictureBox_EyeDropper.TabStop = False
-        Me.PictureBox_EyeDropper.Visible = False
-        '
-        'PixelBoxGrid
-        '
-        Me.PixelBoxGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.PixelBoxGrid.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality
-        Me.PixelBoxGrid.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PixelBoxGrid.Location = New System.Drawing.Point(0, 0)
-        Me.PixelBoxGrid.Name = "PixelBoxGrid"
-        Me.PixelBoxGrid.Size = New System.Drawing.Size(572, 447)
-        Me.PixelBoxGrid.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PixelBoxGrid.TabIndex = 85
-        Me.PixelBoxGrid.TabStop = False
-        '
-        'PixelBox_Checkbox_RemoveBlanksFromExport
-        '
-        Me.PixelBox_Checkbox_RemoveBlanksFromExport.Image = Global.Sprite_Sheet_Splitter.My.Resources.Resources.Checkbox_Grey_Unchecked
-        Me.PixelBox_Checkbox_RemoveBlanksFromExport.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear
-        Me.PixelBox_Checkbox_RemoveBlanksFromExport.Location = New System.Drawing.Point(224, 264)
-        Me.PixelBox_Checkbox_RemoveBlanksFromExport.Name = "PixelBox_Checkbox_RemoveBlanksFromExport"
-        Me.PixelBox_Checkbox_RemoveBlanksFromExport.Size = New System.Drawing.Size(24, 24)
-        Me.PixelBox_Checkbox_RemoveBlanksFromExport.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PixelBox_Checkbox_RemoveBlanksFromExport.TabIndex = 38
-        Me.PixelBox_Checkbox_RemoveBlanksFromExport.TabStop = False
-        '
-        'Button_EyeDropper
-        '
-        Me.Button_EyeDropper.BackColor = System.Drawing.Color.DodgerBlue
-        Me.Button_EyeDropper.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(30, Byte), Integer), CType(CType(34, Byte), Integer))
-        Me.Button_EyeDropper.FlatAppearance.BorderSize = 0
-        Me.Button_EyeDropper.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button_EyeDropper.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button_EyeDropper.ForeColor = System.Drawing.Color.WhiteSmoke
-        Me.Button_EyeDropper.Image = Global.Sprite_Sheet_Splitter.My.Resources.Resources.Oxygen_Colorchooser
-        Me.Button_EyeDropper.Location = New System.Drawing.Point(192, 8)
-        Me.Button_EyeDropper.Name = "Button_EyeDropper"
-        Me.Button_EyeDropper.Size = New System.Drawing.Size(32, 32)
-        Me.Button_EyeDropper.TabIndex = 37
-        Me.Button_EyeDropper.UseVisualStyleBackColor = False
-        Me.Button_EyeDropper.Visible = False
-        '
-        'PixelBox_Checkbox_ColorToTransparent
-        '
-        Me.PixelBox_Checkbox_ColorToTransparent.Image = Global.Sprite_Sheet_Splitter.My.Resources.Resources.Checkbox_Grey_Unchecked
-        Me.PixelBox_Checkbox_ColorToTransparent.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear
-        Me.PixelBox_Checkbox_ColorToTransparent.Location = New System.Drawing.Point(152, 16)
-        Me.PixelBox_Checkbox_ColorToTransparent.Name = "PixelBox_Checkbox_ColorToTransparent"
-        Me.PixelBox_Checkbox_ColorToTransparent.Size = New System.Drawing.Size(24, 24)
-        Me.PixelBox_Checkbox_ColorToTransparent.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PixelBox_Checkbox_ColorToTransparent.TabIndex = 35
-        Me.PixelBox_Checkbox_ColorToTransparent.TabStop = False
-        '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ClearToolStripMenuItem, Me.GridColorToolStripMenuItem, Me.CompletionNotificationToolStripMenuItem})
@@ -734,6 +739,13 @@ Partial Class Form1
         Me.NinePatchToolStripMenuItem.Size = New System.Drawing.Size(154, 26)
         Me.NinePatchToolStripMenuItem.Text = "Nine Patch"
         '
+        'ToolTip1
+        '
+        Me.ToolTip1.BackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(30, Byte), Integer), CType(CType(34, Byte), Integer))
+        Me.ToolTip1.ForeColor = System.Drawing.Color.WhiteSmoke
+        Me.ToolTip1.UseAnimation = False
+        Me.ToolTip1.UseFading = False
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -751,6 +763,8 @@ Partial Class Form1
         CType(Me.NumericUpDown_Hori, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown_Vert, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel_Image.ResumeLayout(False)
+        CType(Me.PictureBox_EyeDropper, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PixelBoxGrid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel1.PerformLayout()
         Me.SplitContainer1.Panel2.ResumeLayout(False)
@@ -759,6 +773,8 @@ Partial Class Form1
         Me.Panel2.ResumeLayout(False)
         Me.ToolStrip1.ResumeLayout(False)
         Me.ToolStrip1.PerformLayout()
+        CType(Me.PixelBox_Checkbox_ExcludeBlanksFromExport, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PixelBox_Checkbox_ColorToTransparent, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel4.ResumeLayout(False)
         CType(Me.NumericUpDown_Offset_Hori, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown_Offset_Vert, System.ComponentModel.ISupportInitialize).EndInit()
@@ -768,10 +784,6 @@ Partial Class Form1
         Me.ContextMenuStrip_ListBox_Bulk.ResumeLayout(False)
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
-        CType(Me.PictureBox_EyeDropper, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PixelBoxGrid, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PixelBox_Checkbox_RemoveBlanksFromExport, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PixelBox_Checkbox_ColorToTransparent, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -830,8 +842,9 @@ Partial Class Form1
     Friend WithEvents ContextMenuStrip_ListBox_Bulk As ContextMenuStrip
     Friend WithEvents ToolStripMenuItem_Clear As ToolStripMenuItem
     Friend WithEvents Label9 As Label
-    Friend WithEvents PixelBox_Checkbox_RemoveBlanksFromExport As PixelBox
+    Friend WithEvents PixelBox_Checkbox_ExcludeBlanksFromExport As PixelBox
     Friend WithEvents ModesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents NinePatchToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents BulkToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Label_SizeModeNotice As Label
 End Class
