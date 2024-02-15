@@ -81,6 +81,7 @@ Partial Class Form1
         Me.ModesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BulkToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.NinePatchToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CubemapStripToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         CType(Me.NumericUpDown_Hori, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown_Vert, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -714,7 +715,7 @@ Partial Class Form1
         '
         'ModesToolStripMenuItem
         '
-        Me.ModesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BulkToolStripMenuItem, Me.NinePatchToolStripMenuItem})
+        Me.ModesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BulkToolStripMenuItem, Me.NinePatchToolStripMenuItem, Me.CubemapStripToolStripMenuItem})
         Me.ModesToolStripMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke
         Me.ModesToolStripMenuItem.Image = Global.Sprite_Sheet_Splitter.My.Resources.Resources.Oxygen_wizard
         Me.ModesToolStripMenuItem.Name = "ModesToolStripMenuItem"
@@ -727,7 +728,7 @@ Partial Class Form1
         Me.BulkToolStripMenuItem.CheckOnClick = True
         Me.BulkToolStripMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke
         Me.BulkToolStripMenuItem.Name = "BulkToolStripMenuItem"
-        Me.BulkToolStripMenuItem.Size = New System.Drawing.Size(154, 26)
+        Me.BulkToolStripMenuItem.Size = New System.Drawing.Size(183, 26)
         Me.BulkToolStripMenuItem.Text = "Bulk"
         '
         'NinePatchToolStripMenuItem
@@ -736,8 +737,17 @@ Partial Class Form1
         Me.NinePatchToolStripMenuItem.CheckOnClick = True
         Me.NinePatchToolStripMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke
         Me.NinePatchToolStripMenuItem.Name = "NinePatchToolStripMenuItem"
-        Me.NinePatchToolStripMenuItem.Size = New System.Drawing.Size(154, 26)
+        Me.NinePatchToolStripMenuItem.Size = New System.Drawing.Size(183, 26)
         Me.NinePatchToolStripMenuItem.Text = "Nine Patch"
+        '
+        'CubemapStripToolStripMenuItem
+        '
+        Me.CubemapStripToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(54, Byte), Integer), CType(CType(57, Byte), Integer), CType(CType(62, Byte), Integer))
+        Me.CubemapStripToolStripMenuItem.CheckOnClick = True
+        Me.CubemapStripToolStripMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke
+        Me.CubemapStripToolStripMenuItem.Name = "CubemapStripToolStripMenuItem"
+        Me.CubemapStripToolStripMenuItem.Size = New System.Drawing.Size(183, 26)
+        Me.CubemapStripToolStripMenuItem.Text = "Cubemap Strip"
         '
         'ToolTip1
         '
@@ -847,4 +857,5 @@ Partial Class Form1
     Friend WithEvents NinePatchToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents BulkToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Label_SizeModeNotice As Label
+    Friend WithEvents CubemapStripToolStripMenuItem As ToolStripMenuItem
 End Class
