@@ -80,7 +80,6 @@ Partial Class Form1
         Me.CompletionNotificationToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ModesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BulkToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.NinePatchToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CubemapStripToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         CType(Me.NumericUpDown_Hori, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -233,8 +232,10 @@ Partial Class Form1
         Me.PixelBoxGrid.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PixelBoxGrid.Location = New System.Drawing.Point(0, 0)
         Me.PixelBoxGrid.Name = "PixelBoxGrid"
+        Me.PixelBoxGrid.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half
         Me.PixelBoxGrid.Size = New System.Drawing.Size(572, 447)
         Me.PixelBoxGrid.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PixelBoxGrid.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None
         Me.PixelBoxGrid.TabIndex = 85
         Me.PixelBoxGrid.TabStop = False
         '
@@ -356,9 +357,10 @@ Partial Class Form1
         'PixelBox_Checkbox_ExcludeBlanksFromExport
         '
         Me.PixelBox_Checkbox_ExcludeBlanksFromExport.Image = Global.Sprite_Sheet_Splitter.My.Resources.Resources.Checkbox_Grey_Unchecked
-        Me.PixelBox_Checkbox_ExcludeBlanksFromExport.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear
+        Me.PixelBox_Checkbox_ExcludeBlanksFromExport.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Bilinear
         Me.PixelBox_Checkbox_ExcludeBlanksFromExport.Location = New System.Drawing.Point(224, 264)
         Me.PixelBox_Checkbox_ExcludeBlanksFromExport.Name = "PixelBox_Checkbox_ExcludeBlanksFromExport"
+        Me.PixelBox_Checkbox_ExcludeBlanksFromExport.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half
         Me.PixelBox_Checkbox_ExcludeBlanksFromExport.Size = New System.Drawing.Size(24, 24)
         Me.PixelBox_Checkbox_ExcludeBlanksFromExport.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PixelBox_Checkbox_ExcludeBlanksFromExport.TabIndex = 38
@@ -392,9 +394,10 @@ Partial Class Form1
         'PixelBox_Checkbox_ColorToTransparent
         '
         Me.PixelBox_Checkbox_ColorToTransparent.Image = Global.Sprite_Sheet_Splitter.My.Resources.Resources.Checkbox_Grey_Unchecked
-        Me.PixelBox_Checkbox_ColorToTransparent.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear
+        Me.PixelBox_Checkbox_ColorToTransparent.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Bilinear
         Me.PixelBox_Checkbox_ColorToTransparent.Location = New System.Drawing.Point(152, 16)
         Me.PixelBox_Checkbox_ColorToTransparent.Name = "PixelBox_Checkbox_ColorToTransparent"
+        Me.PixelBox_Checkbox_ColorToTransparent.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half
         Me.PixelBox_Checkbox_ColorToTransparent.Size = New System.Drawing.Size(24, 24)
         Me.PixelBox_Checkbox_ColorToTransparent.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PixelBox_Checkbox_ColorToTransparent.TabIndex = 35
@@ -715,7 +718,7 @@ Partial Class Form1
         '
         'ModesToolStripMenuItem
         '
-        Me.ModesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BulkToolStripMenuItem, Me.NinePatchToolStripMenuItem, Me.CubemapStripToolStripMenuItem})
+        Me.ModesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BulkToolStripMenuItem, Me.CubemapStripToolStripMenuItem})
         Me.ModesToolStripMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke
         Me.ModesToolStripMenuItem.Image = Global.Sprite_Sheet_Splitter.My.Resources.Resources.Oxygen_wizard
         Me.ModesToolStripMenuItem.Name = "ModesToolStripMenuItem"
@@ -730,15 +733,6 @@ Partial Class Form1
         Me.BulkToolStripMenuItem.Name = "BulkToolStripMenuItem"
         Me.BulkToolStripMenuItem.Size = New System.Drawing.Size(183, 26)
         Me.BulkToolStripMenuItem.Text = "Bulk"
-        '
-        'NinePatchToolStripMenuItem
-        '
-        Me.NinePatchToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(54, Byte), Integer), CType(CType(57, Byte), Integer), CType(CType(62, Byte), Integer))
-        Me.NinePatchToolStripMenuItem.CheckOnClick = True
-        Me.NinePatchToolStripMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke
-        Me.NinePatchToolStripMenuItem.Name = "NinePatchToolStripMenuItem"
-        Me.NinePatchToolStripMenuItem.Size = New System.Drawing.Size(183, 26)
-        Me.NinePatchToolStripMenuItem.Text = "Nine Patch"
         '
         'CubemapStripToolStripMenuItem
         '
@@ -854,7 +848,6 @@ Partial Class Form1
     Friend WithEvents Label9 As Label
     Friend WithEvents PixelBox_Checkbox_ExcludeBlanksFromExport As PixelBox
     Friend WithEvents ModesToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents NinePatchToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents BulkToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Label_SizeModeNotice As Label
     Friend WithEvents CubemapStripToolStripMenuItem As ToolStripMenuItem

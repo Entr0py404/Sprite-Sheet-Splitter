@@ -14,7 +14,6 @@
     Dim SpriteSheet_Image As Image
     Dim controlBitmap As Bitmap
     Dim EyeDropperMode As Boolean = False
-    Dim NinePatchMode As Boolean = False
     Dim BulkMode As Boolean = False
     Dim ColorToTransparent As Boolean = False
     Dim ExcludeBlanksFromExport As Boolean = False
@@ -226,17 +225,9 @@
 
                         ' Determine the export path based on the mode
                         If BulkMode = False And ListBox_Bulk.Items.Count = 0 Then
-                            If NinePatchMode = False Then
-                                CropImage.Save(TextBox_ExportDirectory.Text & "\" & TextBox_FileName.Text & "_" & MainLoopIndex & ".png", ImageFormat.Png)
-                            Else
-                                CropImage.Save(TextBox_ExportDirectory.Text & "\9patch_" & TextBox_FileName.Text & "_" & NinePatchDirections(MainLoopIndex - 1) & ".png", ImageFormat.Png)
-                            End If
+                            CropImage.Save(TextBox_ExportDirectory.Text & "\" & TextBox_FileName.Text & "_" & MainLoopIndex & ".png", ImageFormat.Png)
                         Else ' Bulk Mode
-                            If NinePatchMode = False Then
-                                CropImage.Save(imgPath & "\" & imgNameNoExt & "_" & MainLoopIndex & ".png", ImageFormat.Png)
-                            Else
-                                CropImage.Save(imgPath & "\9patch_" & imgNameNoExt & "_" & NinePatchDirections(MainLoopIndex - 1) & ".png", ImageFormat.Png)
-                            End If
+                            CropImage.Save(imgPath & "\" & imgNameNoExt & "_" & MainLoopIndex & ".png", ImageFormat.Png)
                         End If
                         CropImage.Dispose()
                     End If
@@ -247,18 +238,14 @@
 
                     ' Determine the export path based on the mode
                     If BulkMode = False And ListBox_Bulk.Items.Count = 0 Then
-                        If NinePatchMode = True Then
-                            CropImage.Save(TextBox_ExportDirectory.Text & "\9patch_" & TextBox_FileName.Text & "_" & NinePatchDirections(MainLoopIndex - 1) & ".png", ImageFormat.Png)
-                        ElseIf CubemapStripMode = True Then
+                        If CubemapStripMode = True Then
                             CropImage.Save(TextBox_ExportDirectory.Text & "\" & TextBox_FileName.Text & "_" & CubemapStripModeDirections(MainLoopIndex - 1) & ".png", ImageFormat.Png)
                         Else
                             CropImage.Save(TextBox_ExportDirectory.Text & "\" & TextBox_FileName.Text & "_" & MainLoopIndex & ".png", ImageFormat.Png)
                         End If
 
                     Else ' Bulk Mode
-                        If NinePatchMode = True Then
-                            CropImage.Save(imgPath & "\9patch_" & imgNameNoExt & "_" & NinePatchDirections(MainLoopIndex - 1) & ".png", ImageFormat.Png)
-                        ElseIf CubemapStripMode = True Then
+                        If CubemapStripMode = True Then
                             CropImage.Save(TextBox_ExportDirectory.Text & "\" & imgNameNoExt & "_" & CubemapStripModeDirections(MainLoopIndex - 1) & ".png", ImageFormat.Png)
                         Else
                             CropImage.Save(imgPath & "\" & imgNameNoExt & "_" & MainLoopIndex & ".png", ImageFormat.Png)
@@ -530,7 +517,7 @@
         End If
     End Sub
 
-    ' Clear Pictureboxes
+    ' ClearPictureboxes
     Private Sub ClearPictureboxes()
         ' Clear the picture boxes and associated data
         SpriteSheet_Image = Nothing
@@ -784,38 +771,14 @@
         ListBox_Bulk.Items.Clear()
     End Sub
 
-    ' NinePatchToolStripMenuItem - CheckedChanged
-    Private Sub NinePatchToolStripMenuItem_CheckedChanged(sender As Object, e As EventArgs) Handles NinePatchToolStripMenuItem.CheckedChanged
-        NinePatchMode = NinePatchToolStripMenuItem.Checked
-    End Sub
-
     ' CubemapStripToolStripMenuItem - CheckedChanged
     Private Sub CubemapStripToolStripMenuItem_CheckedChanged(sender As Object, e As EventArgs) Handles CubemapStripToolStripMenuItem.CheckedChanged
         CubemapStripMode = CubemapStripToolStripMenuItem.Checked
     End Sub
 
-    ' NinePatchToolStripMenuItem - Click
-    Private Sub NinePatchToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NinePatchToolStripMenuItem.Click
-        If NinePatchToolStripMenuItem.Checked Then
-            CubemapStripToolStripMenuItem.Checked = False
-            ' Enable nine-patch mode
-            NinePatchMode = True
-            NumericUpDown_Hori.Value = 3
-            NumericUpDown_Vert.Value = 3
-            NumericUpDown_Hori.Enabled = False
-            NumericUpDown_Vert.Enabled = False
-        Else
-            ' Disable nine-patch mode
-            NinePatchMode = False
-            NumericUpDown_Hori.Enabled = True
-            NumericUpDown_Vert.Enabled = True
-        End If
-    End Sub
-
     ' CubemapStripToolStripMenuItem - Click
     Private Sub CubemapStripToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CubemapStripToolStripMenuItem.Click
         If CubemapStripToolStripMenuItem.Checked Then
-            NinePatchToolStripMenuItem.Checked = False
             ' Enable CubemapStrip mode
             CubemapStripMode = True
             NumericUpDown_Hori.Value = 6
