@@ -5,10 +5,7 @@
     Public GridColor As New Pen(Color.FromArgb(0, 255, 128), 2) 'Color of the lines
     Dim ZoomCounter As Integer = 100
     ReadOnly SupportedImageFormats() As String = {".png", ".bmp", ".jpeg", ".jpg", ".tiff", ".tif"}
-    ReadOnly NinePatchDirections() As String = {"northwest", "north", "northeast", "west", "center", "east", "southwest", "south", "southeast"}
     ReadOnly CubemapStripModeDirections() As String = {"px", "nx", "pz", "nz", "py", "ny"}
-
-    'RIGHT, LEFT , Front , back , Up , Down
 
     Dim EventsOn As Boolean = False
     Dim SpriteSheet_Image As Image
